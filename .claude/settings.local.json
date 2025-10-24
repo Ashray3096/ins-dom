@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__atlassian__getAccessibleAtlassianResources",
+      "mcp__atlassian__getJiraIssue",
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "mcp__atlassian__search",
+      "Bash(npm install:*)",
+      "Bash(tree:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "mcp__atlassian__getVisibleJiraProjects",
+      "Bash(psql:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(node -e:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

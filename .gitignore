@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# test data (large files)
+/test-data/*.pdf
+/test-data/*.html
+/test-data/*.eml
+/test-data/*.msg
