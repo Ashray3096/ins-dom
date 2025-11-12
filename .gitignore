@@ -45,3 +45,33 @@ next-env.d.ts
 /test-data/*.html
 /test-data/*.eml
 /test-data/*.msg
+
+# Additional log files
+*.log
+dagster_restart.log
+dagster_clean.log
+
+# Test files
+test_*.py
+test-*.ts
+test-*.sh
+*_test_output.log
+
+# Sample data
+sample*.pdf
+sample*.PDF
+sample*.json
+*_textract_results*.json
+*.docx
+
+# SQL debug files
+*DEBUG*.sql
+*FIX*.sql
+
+# Dagster runtime
+dagster_home/storage/*
+dagster_home/history/
+dagster_home/schedules/
+
+# Screenshots
+screenshot.png
