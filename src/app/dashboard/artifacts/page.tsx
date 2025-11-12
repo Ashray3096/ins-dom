@@ -10,14 +10,24 @@
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { RefreshCw, FileText, Loader2, PlayCircle, Eye, Sparkles } from 'lucide-react';
+import { RefreshCw, FileText, Loader2, PlayCircle, Eye, Sparkles, MousePointer2, HelpCircle, Trash2, Cloud, Upload, Wand2 } from 'lucide-react';
 import { FileUploader } from '@/components/sources/file-uploader';
 import { AIExtractor } from '@/components/extraction/ai-extractor';
+import { VisualDOMSelector } from '@/components/template-builder/visual-dom-selector';
+import { PDFVisualSelector } from '@/components/template-builder/pdf-visual-selector';
+import { TextractRuleBuilder } from '@/components/template-builder/textract-rule-builder';
+import { WorkflowHelpDialog } from '@/components/extraction/workflow-help-dialog';
+import { SaveTemplateDialog } from '@/components/extraction/save-template-dialog';
+import { NabcaTemplateModal } from '@/components/templates/nabca-template-modal';
+import { UniversalWizard } from '@/components/templates/universal-wizard';
 import { toast } from 'sonner';
 import type { Artifact } from '@/types/artifacts';
 import type { Source } from '@/types/sources';
+import type { FieldMapping } from '@/components/template-builder/visual-dom-selector';
+import type { PDFFieldMapping } from '@/components/template-builder/textract-rule-builder';
 
 export default function ArtifactsPage() {
   const [artifacts, setArtifacts] = useState<Artifact[]>([]);
@@ -26,8 +36,19 @@ export default function ArtifactsPage() {
   const [loading, setLoading] = useState(true);
   const [loadingSources, setLoadingSources] = useState(true);
   const [extracting, setExtracting] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const [viewingArtifact, setViewingArtifact] = useState<Artifact | null>(null);
   const [aiExtractingArtifact, setAiExtractingArtifact] = useState<Artifact | null>(null);
+  const [visualBuilderArtifact, setVisualBuilderArtifact] = useState<Artifact | null>(null);
+  const [pdfVisualBuilderArtifact, setPdfVisualBuilderArtifact] = useState<Artifact | null>(null);
+  const [textractBuilderArtifact, setTextractBuilderArtifact] = useState<Artifact | null>(null);
+  const [nabcaTemplateArtifact, setNabcaTemplateArtifact] = useState<Artifact | null>(null);
+  const [universalWizardArtifact, setUniversalWizardArtifact] = useState<Artifact | null>(null);
+  const [showWorkflowHelp, setShowWorkflowHelp] = useState(false);
+  const [showSaveTemplateDialog, setShowSaveTemplateDialog] = useState(false);
+  const [pendingFieldMappings, setPendingFieldMappings] = useState<FieldMapping[]>([]);
+  const [pendingPDFFieldMappings, setPendingPDFFieldMappings] = useState<PDFFieldMapping[]>([]);
+  const [pendingTemplateArtifact, setPendingTemplateArtifact] = useState<Artifact | null>(null);
 
   useEffect(() => {
     fetchSources();
@@ -119,6 +140,163 @@ export default function ArtifactsPage() {
       toast.error(error instanceof Error ? error.message : 'Failed to extract content');
     } finally {
       setExtracting(null);
+    }
+  };
+
+  const handleDelete = async (artifactId: string, filename: string) => {
+    if (!confirm(`Are you sure you want to delete "${filename}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      setDeleting(artifactId);
+      const response = await fetch(`/api/artifacts/${artifactId}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete artifact');
+      }
+
+      toast.success('Artifact deleted successfully!');
+
+      // Remove the artifact from the list
+      setArtifacts(prev => prev.filter(a => a.id !== artifactId));
+    } catch (error) {
+      console.error('Error deleting artifact:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to delete artifact');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const saveTemplateFromVisualBuilder = async (name: string, description: string) => {
+    if (!pendingTemplateArtifact || (pendingFieldMappings.length === 0 && pendingPDFFieldMappings.length === 0)) {
+      toast.error('No field mappings to save');
+      return;
+    }
+
+    try {
+      console.log('🔄 Saving template from visual builder...');
+
+      let fields: string[];
+      let selectors: Record<string, any> = { fields: {} };
+
+      // Handle HTML field mappings
+      if (pendingFieldMappings.length > 0) {
+        console.log('HTML Field mappings:', pendingFieldMappings);
+        fields = pendingFieldMappings.map(m => m.name);
+
+        pendingFieldMappings.forEach((mapping) => {
+          selectors.fields[mapping.name] = {
+            structural: {
+              xpath: mapping.xpath,
+              cssSelector: mapping.cssSelector,
+              sampleValue: mapping.sampleValue,
+              elementInfo: mapping.elementInfo
+            },
+            validation: {
+              format: mapping.type === 'number' ? 'numeric' :
+                     mapping.type === 'date' ? 'date' :
+                     mapping.type === 'boolean' ? 'boolean' : 'text',
+              required: mapping.required
+            }
+          };
+        });
+      }
+      // Handle PDF field mappings (Textract-based)
+      else if (pendingPDFFieldMappings.length > 0) {
+        console.log('PDF Field mappings (Textract):', pendingPDFFieldMappings);
+        fields = pendingPDFFieldMappings.map(m => m.name);
+
+        // Check if this is Textract-based (has extractionRule)
+        const isTextractBased = pendingPDFFieldMappings[0].extractionRule !== undefined;
+
+        if (isTextractBased) {
+          // Textract-based mappings
+          selectors.extractionEngine = 'textract';
+          pendingPDFFieldMappings.forEach((mapping) => {
+            selectors.fields[mapping.name] = {
+              ...mapping.extractionRule,
+              sampleValue: mapping.sampleValue,
+              description: mapping.description,
+            };
+          });
+        } else {
+          // Legacy PDF visual selector mappings
+          pendingPDFFieldMappings.forEach((mapping: any) => {
+            selectors.fields[mapping.name] = {
+              structural: {
+                pageNumber: mapping.pageNumber,
+                boundingBox: mapping.boundingBox,
+                sampleValue: mapping.textContent
+              },
+              pattern: mapping.textPattern ? {
+                primary: mapping.textPattern,
+                extractionType: 'regex',
+                group: 0
+              } : undefined,
+              validation: {
+                format: mapping.type === 'number' ? 'numeric' :
+                       mapping.type === 'date' ? 'date' :
+                       mapping.type === 'boolean' ? 'boolean' : 'text',
+                required: mapping.required
+              }
+            };
+          });
+        }
+      } else {
+        toast.error('No field mappings to save');
+        return;
+      }
+
+      console.log('Converted selectors:', selectors);
+
+      // Create prompt describing the extraction
+      const prompt = description || `Extract the following fields: ${fields.join(', ')}`;
+
+      // Determine extraction method
+      const extractionMethod = selectors.extractionEngine === 'textract' ? 'textract' : 'visual';
+
+      // Create template via API
+      const response = await fetch('/api/templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          description,
+          prompt, // Required by API
+          fields, // Required by API - array of field names
+          artifact_type: pendingTemplateArtifact.artifact_type,
+          selectors,
+          extraction_method: extractionMethod,
+          sample_artifact_id: pendingTemplateArtifact.id,
+          status: 'ACTIVE' // Mark as active since it's ready to use
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error('❌ API error:', result);
+        throw new Error(result.error || 'Failed to save template');
+      }
+
+      console.log('✅ Template saved:', result);
+      const totalFields = pendingFieldMappings.length + pendingPDFFieldMappings.length;
+      toast.success(`Template "${name}" saved successfully with ${totalFields} fields!`);
+
+      // Clear pending data
+      setPendingFieldMappings([]);
+      setPendingPDFFieldMappings([]);
+      setPendingTemplateArtifact(null);
+      setShowSaveTemplateDialog(false);
+
+    } catch (error) {
+      console.error('❌ Error saving template:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to save template');
     }
   };
 
@@ -238,7 +416,18 @@ export default function ArtifactsPage() {
       {/* Artifacts List */}
       <Card>
         <CardHeader>
-          <CardTitle>Uploaded Artifacts ({artifacts.length})</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Uploaded Artifacts ({artifacts.length})</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowWorkflowHelp(true)}
+              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              How to extract data?
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           {loading ? (
@@ -261,9 +450,23 @@ export default function ArtifactsPage() {
                   className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">
-                      {artifact.original_filename}
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-medium text-gray-900 truncate">
+                        {artifact.original_filename}
+                      </p>
+                      {/* Storage Badge */}
+                      {artifact.metadata?.s3_key ? (
+                        <Badge variant="secondary" className="flex items-center gap-1 bg-blue-50 text-blue-700 border-blue-200">
+                          <Cloud className="h-3 w-3" />
+                          S3
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200">
+                          <Upload className="h-3 w-3" />
+                          Uploaded
+                        </Badge>
+                      )}
+                    </div>
                     <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
                       <span className="uppercase">{artifact.artifact_type}</span>
                       <span>{(artifact.file_size! / 1024).toFixed(2)} KB</span>
@@ -308,13 +511,58 @@ export default function ArtifactsPage() {
                           <Eye className="w-4 h-4 mr-2" />
                           View Content
                         </Button>
+                        {artifact.artifact_type === 'html' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setVisualBuilderArtifact(artifact)}
+                            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                          >
+                            <MousePointer2 className="w-4 h-4 mr-2" />
+                            Build Visual Template
+                          </Button>
+                        )}
+                        {artifact.artifact_type === 'pdf' &&
+                         !artifact.raw_content?.html &&
+                         !artifact.filename?.endsWith('.html') && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setTextractBuilderArtifact(artifact)}
+                            className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                          >
+                            <Sparkles className="w-4 h-4 mr-2" />
+                            Build Smart Template
+                          </Button>
+                        )}
+                        {/* NABCA Template Generation - Only for S3 PDFs */}
+                        {artifact.metadata?.s3_key && artifact.artifact_type === 'pdf' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setNabcaTemplateArtifact(artifact)}
+                            className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                          >
+                            <Sparkles className="w-4 h-4 mr-2" />
+                            Generate NABCA Template
+                          </Button>
+                        )}
                         <Button
                           size="sm"
                           onClick={() => setAiExtractingArtifact(artifact)}
                           className="bg-purple-600 hover:bg-purple-700"
                         >
                           <Sparkles className="w-4 h-4 mr-2" />
-                          AI Extract
+                          Extract Data
+                        </Button>
+                        {/* NEW: Universal Template Wizard - 5th Button */}
+                        <Button
+                          size="sm"
+                          onClick={() => setUniversalWizardArtifact(artifact)}
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                        >
+                          <Wand2 className="w-4 h-4 mr-2" />
+                          Create Template (NEW)
                         </Button>
                       </>
                     )}
@@ -323,6 +571,19 @@ export default function ArtifactsPage() {
                         {artifact.error_message}
                       </span>
                     )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(artifact.id, artifact.original_filename)}
+                      disabled={deleting === artifact.id}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      {deleting === artifact.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -414,24 +675,124 @@ export default function ArtifactsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* AI Extraction Dialog */}
-      <Dialog open={!!aiExtractingArtifact} onOpenChange={() => setAiExtractingArtifact(null)}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-600" />
-              AI-Powered Data Extraction
-            </DialogTitle>
-            <p className="text-sm text-gray-500 mt-1">
-              Use AI to extract structured data from {aiExtractingArtifact?.original_filename}
-            </p>
-          </DialogHeader>
+      {/* AI Extraction Dialog - Full Screen */}
+      {aiExtractingArtifact && (
+        <div className="fixed inset-0 z-50 bg-white">
+          {/* Header */}
+          <div className="border-b p-6 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-600" />
+                Extract Data with AI
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                {aiExtractingArtifact.original_filename} - View document and extract structured data
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setAiExtractingArtifact(null)}
+            >
+              <span className="text-2xl">&times;</span>
+            </Button>
+          </div>
 
-          {aiExtractingArtifact && (
+          {/* Content */}
+          <div className="h-[calc(100vh-100px)]">
             <AIExtractor artifact={aiExtractingArtifact} />
-          )}
-        </DialogContent>
-      </Dialog>
+          </div>
+        </div>
+      )}
+
+      {/* Visual DOM Selector - Full Screen */}
+      {visualBuilderArtifact && (
+        <VisualDOMSelector
+          artifact={visualBuilderArtifact}
+          onSave={async (fieldMappings) => {
+            console.log('Field mappings from visual builder:', fieldMappings);
+            // Store the field mappings and artifact, then show save dialog
+            setPendingFieldMappings(fieldMappings);
+            setPendingTemplateArtifact(visualBuilderArtifact);
+            setVisualBuilderArtifact(null);
+            setShowSaveTemplateDialog(true);
+          }}
+          onCancel={() => setVisualBuilderArtifact(null)}
+        />
+      )}
+
+      {/* PDF Visual Selector - Full Screen */}
+      {pdfVisualBuilderArtifact && (
+        <PDFVisualSelector
+          artifact={pdfVisualBuilderArtifact}
+          onSave={async (fieldMappings) => {
+            console.log('PDF field mappings from visual builder:', fieldMappings);
+            // Store the PDF field mappings and artifact, then show save dialog
+            setPendingPDFFieldMappings(fieldMappings);
+            setPendingTemplateArtifact(pdfVisualBuilderArtifact);
+            setPdfVisualBuilderArtifact(null);
+            setShowSaveTemplateDialog(true);
+          }}
+          onCancel={() => setPdfVisualBuilderArtifact(null)}
+        />
+      )}
+
+      {/* Textract Rule Builder - Full Screen */}
+      {textractBuilderArtifact && (
+        <TextractRuleBuilder
+          artifact={textractBuilderArtifact}
+          onSave={async (fieldMappings) => {
+            console.log('Textract field mappings:', fieldMappings);
+            // Store the Textract field mappings and artifact, then show save dialog
+            setPendingPDFFieldMappings(fieldMappings);
+            setPendingTemplateArtifact(textractBuilderArtifact);
+            setTextractBuilderArtifact(null);
+            setShowSaveTemplateDialog(true);
+          }}
+          onCancel={() => setTextractBuilderArtifact(null)}
+        />
+      )}
+
+      {/* Workflow Help Dialog */}
+      <WorkflowHelpDialog
+        open={showWorkflowHelp}
+        onOpenChange={setShowWorkflowHelp}
+      />
+
+      {/* Save Template Dialog */}
+      <SaveTemplateDialog
+        open={showSaveTemplateDialog}
+        onOpenChange={setShowSaveTemplateDialog}
+        onSave={saveTemplateFromVisualBuilder}
+        correctionStats={{
+          correctedFields: 0,
+          correctedRows: 0
+        }}
+      />
+
+      {/* NABCA Template Generation Modal */}
+      <NabcaTemplateModal
+        artifact={nabcaTemplateArtifact}
+        open={!!nabcaTemplateArtifact}
+        onOpenChange={(open) => {
+          if (!open) setNabcaTemplateArtifact(null);
+        }}
+        onSuccess={(templateId) => {
+          console.log('✅ NABCA template created:', templateId);
+          toast.success('Template created! You can now view it in the Templates page.');
+          // Optionally redirect to templates page
+          // window.location.href = `/dashboard/templates/${templateId}`;
+        }}
+      />
+
+      {/* Universal Template Wizard - NEW (5th Button) */}
+      <UniversalWizard
+        artifact={universalWizardArtifact}
+        open={!!universalWizardArtifact}
+        onOpenChange={(open) => {
+          if (!open) setUniversalWizardArtifact(null);
+        }}
+      />
     </div>
   );
 }

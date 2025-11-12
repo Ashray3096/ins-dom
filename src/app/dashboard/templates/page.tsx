@@ -115,6 +115,7 @@ export default function TemplatesPage() {
           templates={templates}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onRefresh={fetchTemplates}
         />
       )}
 

@@ -12,10 +12,11 @@ import type { ProviderType, ProviderCadence } from '@/types/providers';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -26,7 +27,7 @@ export async function GET(
     const { data, error } = await supabase
       .from('providers')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id)
       .single();
 
@@ -50,10 +51,11 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -99,7 +101,7 @@ export async function PATCH(
     const { data, error } = await supabase
       .from('providers')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id)
       .select()
       .single();
@@ -124,10 +126,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -139,7 +142,7 @@ export async function DELETE(
     const { data: files, error: filesError } = await supabase
       .from('source_files')
       .select('id')
-      .eq('provider_id', params.id)
+      .eq('provider_id', id)
       .limit(1);
 
     if (filesError) {
@@ -157,7 +160,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('providers')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id);
 
     if (error) {

@@ -9,7 +9,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Wand2, FileText } from 'lucide-react';
+import { Edit, Trash2, Wand2, FileText, CheckCircle, Archive } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Template } from '@/types/templates';
 
@@ -17,10 +17,12 @@ interface TemplateListProps {
   templates: Template[];
   onEdit: (template: Template) => void;
   onDelete: (id: string) => void;
+  onRefresh?: () => void;
 }
 
-export function TemplateList({ templates, onEdit, onDelete }: TemplateListProps) {
+export function TemplateList({ templates, onEdit, onDelete, onRefresh }: TemplateListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const handleDelete = async (template: Template) => {
     if (!confirm(`Are you sure you want to delete "${template.name}"? This action cannot be undone.`)) {
@@ -35,6 +37,58 @@ export function TemplateList({ templates, onEdit, onDelete }: TemplateListProps)
       toast.error('Failed to delete template');
     } finally {
       setDeletingId(null);
+    }
+  };
+
+  const handleActivate = async (template: Template) => {
+    try {
+      setUpdatingId(template.id);
+
+      const response = await fetch(`/api/templates/${template.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'ACTIVE' }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to activate template');
+      }
+
+      toast.success(`"${template.name}" is now active and ready to use!`);
+      onRefresh?.();
+    } catch (error) {
+      console.error('Error activating template:', error);
+      toast.error('Failed to activate template');
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleArchive = async (template: Template) => {
+    if (!confirm(`Archive "${template.name}"? You can reactivate it later.`)) {
+      return;
+    }
+
+    try {
+      setUpdatingId(template.id);
+
+      const response = await fetch(`/api/templates/${template.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'ARCHIVED' }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to archive template');
+      }
+
+      toast.success(`"${template.name}" has been archived`);
+      onRefresh?.();
+    } catch (error) {
+      console.error('Error archiving template:', error);
+      toast.error('Failed to archive template');
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -118,28 +172,87 @@ export function TemplateList({ templates, onEdit, onDelete }: TemplateListProps)
               </div>
             )}
 
-            <div className="flex gap-2 pt-4 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex-1"
-                onClick={() => onEdit(template)}
-              >
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(template)}
-                disabled={deletingId === template.id}
-              >
-                {deletingId === template.id ? (
-                  '...'
-                ) : (
-                  <Trash2 className="h-4 w-4 text-red-600" />
-                )}
-              </Button>
+            <div className="flex flex-col gap-2 pt-4 border-t">
+              {/* Activate/Archive Button */}
+              {template.status === 'DRAFT' && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  onClick={() => handleActivate(template)}
+                  disabled={updatingId === template.id}
+                >
+                  {updatingId === template.id ? (
+                    'Activating...'
+                  ) : (
+                    <>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Activate Template
+                    </>
+                  )}
+                </Button>
+              )}
+              {template.status === 'ACTIVE' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => handleArchive(template)}
+                  disabled={updatingId === template.id}
+                >
+                  {updatingId === template.id ? (
+                    'Archiving...'
+                  ) : (
+                    <>
+                      <Archive className="mr-2 h-4 w-4" />
+                      Archive
+                    </>
+                  )}
+                </Button>
+              )}
+              {template.status === 'ARCHIVED' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => handleActivate(template)}
+                  disabled={updatingId === template.id}
+                >
+                  {updatingId === template.id ? (
+                    'Reactivating...'
+                  ) : (
+                    <>
+                      <CheckCircle className="mr-2 h-4 w-4" />
+                      Reactivate
+                    </>
+                  )}
+                </Button>
+              )}
+
+              {/* Edit and Delete Buttons */}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => onEdit(template)}
+                >
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(template)}
+                  disabled={deletingId === template.id}
+                >
+                  {deletingId === template.id ? (
+                    '...'
+                  ) : (
+                    <Trash2 className="h-4 w-4 text-red-600" />
+                  )}
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

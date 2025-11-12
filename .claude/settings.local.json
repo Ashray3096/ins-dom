@@ -11,7 +11,18 @@
       "mcp__atlassian__getVisibleJiraProjects",
       "Bash(psql:*)",
       "Bash(npm uninstall:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(pip install:*)",
+      "Bash(../venv/bin/pip install:*)",
+      "Bash(/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/bin/pip install:*)",
+      "Bash(./start-dagster.sh:*)",
+      "Bash(curl:*)",
+      "Bash(\"https://$JIRA_HOST/rest/api/3/project/CDP\")",
+      "Bash(chmod:*)",
+      "Bash(./test-nabca-setup.sh:*)"
     ],
     "deny": [],
     "ask": []

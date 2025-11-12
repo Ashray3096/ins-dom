@@ -1,0 +1,88 @@
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - LOGS_CAPTURED - Started capturing logs in process (pid: 33341).
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - extract_raw_ttb_ai - STEP_START - Started execution of step "extract_raw_ttb_ai".
+2025-10-29 11:06:09 -0400 - dagster - INFO - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Starting extraction for raw_ttb_ai
+2025-10-29 11:06:09 -0400 - dagster - INFO - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Found 9 artifacts to process
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for 270cd304-ca7b-4611-a53e-9307e4120d28
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for a96626b4-71f5-4d6e-b506-1b83e9f114ce
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using basic pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for fd8fb954-eb90-44e9-8a7e-4f73ad15960b
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:09 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for c12d1d72-710f-409d-a2a2-6677f3a29e87
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for 3fd197eb-5ebc-4815-aca7-0ee1d3cc919f
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using basic pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for b01c9c79-3060-4b4c-bf49-7c8b11988eff
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted plant_registry_number using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:10 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for 886ad6dc-6981-42b8-a90a-43d81c0fe862
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted plant_registry_number using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for 9d92921e-ea11-42f7-b9cb-7c739f740524
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracting from HTML text for 5efc36bd-111a-4f4f-85ab-cb8987e761c7
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Loaded template selectors for template 7e4d486a-44f0-4a4a-b6e1-a884b5b302af
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ttb_id using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted ct_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted or_number using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted source_of_product using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted plant_registry_number using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted product_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted application_type using template fallback pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted status using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extracted class_type_description using template primary pattern
+2025-10-29 11:06:11 -0400 - dagster - INFO - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Extraction complete: 9 successful, 0 failed (100.0% success rate)
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - extract_raw_ttb_ai - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - extract_raw_ttb_ai - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_ttb_ai using PickledObjectFilesystemIOManager...
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - extract_raw_ttb_ai - ASSET_MATERIALIZATION - Materialized value extract_raw_ttb_ai.
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - extract_raw_ttb_ai - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-10-29 11:06:11 -0400 - dagster - DEBUG - __ASSET_JOB - 917c32ed-8ec2-41e2-a998-58ddb2eeb50e - 33341 - extract_raw_ttb_ai - STEP_SUCCESS - Finished execution of step "extract_raw_ttb_ai" in 2.48s.

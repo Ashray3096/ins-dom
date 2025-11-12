@@ -1,0 +1,11 @@
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - LOGS_CAPTURED - Started capturing logs in process (pid: 33851).
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - STEP_START - Started execution of step "load_raw_ttb_ai".
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - load_raw_ttb_ai - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_ttb_ai using PickledObjectFilesystemIOManager...
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - LOADED_INPUT - Loaded input "extract_raw_ttb_ai" using input manager "io_manager"
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - STEP_INPUT - Got input "extract_raw_ttb_ai" of type "Dict[String,Any]". (Type check passed).
+2025-10-29 11:14:54 -0400 - dagster - INFO - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - load_raw_ttb_ai - Starting load for raw_ttb_ai
+2025-10-29 11:14:54 -0400 - dagster - INFO - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - load_raw_ttb_ai - Loaded batch 1: 9 records
+2025-10-29 11:14:54 -0400 - dagster - INFO - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - load_raw_ttb_ai - Load complete: 9 loaded, 0 failed (100.0% success rate)
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - ASSET_MATERIALIZATION - Materialized value load_raw_ttb_ai.
+2025-10-29 11:14:54 -0400 - dagster - DEBUG - __ASSET_JOB - 7e0e57ad-e525-44c5-9a66-46cd05a6a17d - 33851 - load_raw_ttb_ai - STEP_SUCCESS - Finished execution of step "load_raw_ttb_ai" in 262ms.

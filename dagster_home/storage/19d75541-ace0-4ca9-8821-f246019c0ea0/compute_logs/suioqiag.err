@@ -1,0 +1,62 @@
+2025-11-03 23:25:36 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - LOGS_CAPTURED - Started capturing logs in process (pid: 68311).
+2025-11-03 23:25:36 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - extract_raw_nabca_brand_leaders - STEP_START - Started execution of step "extract_raw_nabca_brand_leaders".
+2025-11-03 23:25:36 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Starting NABCA extraction for raw_nabca_brand_leaders
+2025-11-03 23:25:36 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Section: Brand Leaders, Pages: 3-4
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Found 1 PDF artifacts to process
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Processing artifact: 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Downloading from S3: s3://nabca-data/raw-pdfs/631_9L_0125.PDF
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Extracting pages 3-4...
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - PDF has 718 pages, extracting pages 3-4
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Uploading to S3: s3://inspector-dom-textract/textract-temp/nabca-extraction/3e73a850-bfe5-4245-8a13-b20d1c89e5c7/section.pdf
+2025-11-03 23:25:37 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Starting Textract async analysis...
+2025-11-03 23:25:38 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Textract job started: 90c73f6238cb29a1afb86959e52fb04d2bbd0d263c8ec87eb2e8900c80073371
+2025-11-03 23:25:43 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Textract job status: IN_PROGRESS (waited 5s)
+2025-11-03 23:25:48 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Textract job completed after 10s
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Textract complete: 2 tables detected
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Processing 2 tables...
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Table 1: 53 rows
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Table 2: 44 rows
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -     Skipping 3 header rows, merging 41 data rows
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Merged table data: 94 total rows
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 📊 RAW TABLE DATA (94 rows total):
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 0: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 1: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 2: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 3: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 4: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 5: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 6: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 7: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 8: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 9: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 0: 0 non-empty cells
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 1: 0 non-empty cells
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 2: 0 non-empty cells
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 3: 0 non-empty cells
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders -   Row 4: 0 non-empty cells
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Detected header row at index 0 (has 0 non-empty cells)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 📋 Headers: ['', '', '', '', '', '', '', '', '']
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 📈 Data rows: 93
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Table has 9 columns and 93 data rows
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 📋 Textract Headers: ['', '', '', '', '', '', '', '', '']
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 🎯 Semantic Fields: ['brand (brand)', 'type (type)', 'ytd_rank (ytd_rank)', 'ytd_pct_total (ytd_pct_total)', 'ytd_case_sales (ytd_case_sales)', 'ytd_vs_last_year (ytd_vs_last_year)', 'current_month_case_sales (current_month_case_sales)', 'current_month_vs_last_year (current_month_vs_last_year)', 'l12m_case_sales (l12m_case_sales)']
+2025-11-03 23:25:49 -0500 - dagster - WARNING - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ⚠️  All headers are empty! Using positional mapping for NABCA table.
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 0 -> 'brand' (brand)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 1 -> 'type' (type)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 2 -> 'ytd_rank' (ytd_rank)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 3 -> 'ytd_pct_total' (ytd_pct_total)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 4 -> 'ytd_case_sales' (ytd_case_sales)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 5 -> 'ytd_vs_last_year' (ytd_vs_last_year)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 6 -> 'current_month_case_sales' (current_month_case_sales)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 7 -> 'current_month_vs_last_year' (current_month_vs_last_year)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 8 -> 'l12m_case_sales' (l12m_case_sales)
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - 📊 Column Mapping Complete: 9 of 9 columns mapped
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Mapping: {0: 'brand', 1: 'type', 2: 'ytd_rank', 3: 'ytd_pct_total', 4: 'ytd_case_sales', 5: 'ytd_vs_last_year', 6: 'current_month_case_sales', 7: 'current_month_vs_last_year', 8: 'l12m_case_sales'}
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Extracted 93 valid records
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Extracted 93 records from artifact 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:25:49 -0500 - dagster - INFO - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - NABCA extraction complete: 93 records from 1 artifacts, 0 failed (100.0% success rate)
+2025-11-03 23:25:49 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - extract_raw_nabca_brand_leaders - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:25:49 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - extract_raw_nabca_brand_leaders - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_brand_leaders using PickledObjectFilesystemIOManager...
+2025-11-03 23:25:49 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - extract_raw_nabca_brand_leaders - ASSET_MATERIALIZATION - Materialized value extract_raw_nabca_brand_leaders.
+2025-11-03 23:25:49 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - extract_raw_nabca_brand_leaders - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-11-03 23:25:49 -0500 - dagster - DEBUG - __ASSET_JOB - 19d75541-ace0-4ca9-8821-f246019c0ea0 - 68311 - extract_raw_nabca_brand_leaders - STEP_SUCCESS - Finished execution of step "extract_raw_nabca_brand_leaders" in 12.81s.

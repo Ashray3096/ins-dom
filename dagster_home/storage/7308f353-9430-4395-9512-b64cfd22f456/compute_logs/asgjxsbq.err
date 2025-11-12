@@ -1,0 +1,10 @@
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - LOGS_CAPTURED - Started capturing logs in process (pid: 74146).
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - STEP_START - Started execution of step "load_raw_nabca_table_1".
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - load_raw_nabca_table_1 - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_1 using PickledObjectFilesystemIOManager...
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - LOADED_INPUT - Loaded input "extract_raw_nabca_table_1" using input manager "io_manager", from output "result" of step "extract_raw_nabca_table_1"
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - STEP_INPUT - Got input "extract_raw_nabca_table_1" of type "Dict[String,Any]". (Type check passed).
+2025-11-04 13:52:44 -0500 - dagster - INFO - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - load_raw_nabca_table_1 - Starting load for raw_nabca_table_1
+2025-11-04 13:52:44 -0500 - dagster - WARNING - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - load_raw_nabca_table_1 - No records to load
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_table_1.
+2025-11-04 13:52:44 -0500 - dagster - DEBUG - __ASSET_JOB - 7308f353-9430-4395-9512-b64cfd22f456 - 74146 - load_raw_nabca_table_1 - STEP_SUCCESS - Finished execution of step "load_raw_nabca_table_1" in 72ms.

@@ -83,25 +83,135 @@ export async function POST(request: NextRequest) {
       apiKey: apiKey,
     });
 
-    // Prepare the prompt
-    const systemPrompt = `You are a data extraction assistant. Your task is to analyze document content and extract structured data based on user instructions.
+    // Determine document type for rule generation
+    const documentType = artifact.artifact_type || 'unknown';
 
-Rules:
-1. Extract data exactly as it appears in the document
-2. Return data as a JSON array of objects
-3. Each object represents one row/record
-4. Use consistent field names across all records
-5. If a field is not found, use null
-6. Be precise and accurate
+    // Prepare the prompt - GENERATES CASCADE EXTRACTION RULES!
+    const systemPrompt = `You are a data extraction assistant that generates MULTI-LAYER REUSABLE EXTRACTION RULES.
 
-Return your response in this exact JSON format:
+CRITICAL MISSION: Generate rules that will be applied to THOUSANDS of similar documents WITHOUT calling AI again.
+Your rules must be:
+1. PRECISE - Work on exact structure matches (Layer 1: Structural)
+2. FLEXIBLE - Work when structure changes but patterns stay same (Layer 2: Patterns)
+3. WELL-DOCUMENTED - Include locations, validation, and notes
+
+═══════════════════════════════════════════════════════════════
+
+RULE GENERATION STRATEGY - TWO LAYERS:
+
+Layer 1: STRUCTURAL (XPath/CSS selectors)
+- Fastest extraction (< 1ms)
+- Works when HTML structure is identical
+- Prefer specific selectors (IDs > classes > tags)
+
+Layer 2: PATTERNS (Regex)
+- Fallback when structure changes (< 10ms)
+- Works on text content regardless of HTML structure
+- Include primary + fallback patterns for robustness
+
+═══════════════════════════════════════════════════════════════
+
+${documentType === 'html' ? `
+FOR HTML DOCUMENTS - Generate BOTH layers:
+
+Required Response Format:
 {
-  "fields": ["field1", "field2", "field3"],
-  "data": [
-    {"field1": "value1", "field2": "value2", "field3": "value3"},
-    {"field1": "value4", "field2": "value5", "field3": "value6"}
-  ]
-}`;
+  "fields": ["field1", "field2"],
+  "data": [{"field1": "value1", "field2": "value2"}],
+  "selectors": {
+    "fields": {
+      "field1": {
+        "structural": {
+          "xpath": "//div[@id='content']//span[@class='field1']",
+          "cssSelector": "#content .field1",
+          "sampleValue": "value1",
+          "elementInfo": {
+            "tagName": "span",
+            "className": "field1",
+            "id": ""
+          }
+        },
+        "pattern": {
+          "primary": "Field 1:\\\\s*([A-Za-z0-9]+)",
+          "fallback": "field1[:\\\\s]+([^\\\\n]+)",
+          "location": "Describe where this field appears in the document",
+          "extractionType": "regex",
+          "group": 1
+        },
+        "validation": {
+          "format": "alphanumeric|numeric|text|email|url",
+          "required": true,
+          "minLength": 5,
+          "maxLength": 50
+        }
+      }
+    }
+  }
+}
+
+IMPORTANT FOR HTML:
+- Generate XPath that works across browser engines
+- Use CSS selectors that are widely supported
+- Regex patterns must escape special characters properly
+- Include field location descriptions for debugging
+- Specify regex capture group numbers
+` : ''}
+
+${documentType === 'pdf' ? `
+FOR PDF DOCUMENTS - Generate table rules + patterns:
+
+Required Response Format:
+{
+  "fields": ["field1", "field2"],
+  "data": [{"field1": "value1", "field2": "value2"}],
+  "selectors": {
+    "structural": {
+      "tableRules": {
+        "pageNumber": 1,
+        "tableIndex": 0,
+        "hasHeader": true,
+        "columnMappings": {
+          "field1": {
+            "columnIndex": 0,
+            "columnHeader": "Field 1 Header"
+          }
+        },
+        "startRow": 1,
+        "notes": "Description of table structure"
+      }
+    },
+    "patterns": {
+      "field1": {
+        "primary": "Field 1[:\\\\s]+([^\\\\n]+)",
+        "fallback": "(?:field1|Field1)[:\\\\s]*([A-Za-z0-9 ]+)",
+        "location": "Page 1, section heading",
+        "extractionType": "regex",
+        "group": 1
+      }
+    }
+  }
+}
+
+IMPORTANT FOR PDF:
+- Specify exact page numbers and table indices
+- Map columns by both index AND header name
+- Include patterns for non-table data
+- Note any multi-page table spans
+` : ''}
+
+═══════════════════════════════════════════════════════════════
+
+VALIDATION RULES (include when applicable):
+- format: "numeric", "alphanumeric", "email", "url", "date", "text"
+- required: true/false
+- minLength, maxLength: for strings
+- allowedValues: array of valid options
+- pattern: regex pattern for validation
+
+═══════════════════════════════════════════════════════════════
+
+Return ONLY valid JSON. No explanations before or after.`;
+
 
     const userPrompt = `Document Content:
 ${artifact.raw_content.text.substring(0, 50000)}
@@ -185,6 +295,7 @@ Please extract the requested data and return it in the specified JSON format.`;
       success: true,
       fields: extractedData.fields,
       data: extractedData.data,
+      selectors: extractedData.selectors || null, // Extraction rules for reuse!
       usage: {
         input_tokens: inputTokens,
         output_tokens: outputTokens,

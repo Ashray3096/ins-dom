@@ -1,0 +1,26 @@
+2025-11-03 21:46:06 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - LOGS_CAPTURED - Started capturing logs in process (pid: 63888).
+2025-11-03 21:46:06 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - extract_raw_nabca_brand_leaders - STEP_START - Started execution of step "extract_raw_nabca_brand_leaders".
+2025-11-03 21:46:06 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Starting NABCA extraction for raw_nabca_brand_leaders
+2025-11-03 21:46:06 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Section: Brand Leaders, Pages: 3-4
+2025-11-03 21:46:07 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Found 1 PDF artifacts to process
+2025-11-03 21:46:07 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Processing artifact: 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 21:46:07 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Downloading from S3: s3://nabca-data/raw-pdfs/631_9L_0125.PDF
+2025-11-03 21:46:07 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Extracting pages 3-4...
+2025-11-03 21:46:07 -0500 - dagster - ERROR - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Failed to extract PDF pages: name 'PdfReader' is not defined
+2025-11-03 21:46:07 -0500 - dagster - ERROR - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Failed to process artifact 3e73a850-bfe5-4245-8a13-b20d1c89e5c7: name 'PdfReader' is not defined
+2025-11-03 21:46:07 -0500 - dagster - ERROR - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Traceback (most recent call last):
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/pipelines/raw_nabca_brand_leaders_v1.py", line 94, in extract_raw_nabca_brand_leaders
+    section_pdf_bytes = extract_pdf_page_range(
+                        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/pipelines/raw_nabca_brand_leaders_v1.py", line 250, in extract_pdf_page_range
+    pdf_reader = PdfReader(io.BytesIO(pdf_data))
+                 ^^^^^^^^^
+NameError: name 'PdfReader' is not defined
+
+2025-11-03 21:46:07 -0500 - dagster - INFO - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - NABCA extraction complete: 0 records from 1 artifacts, 1 failed (0.0% success rate)
+2025-11-03 21:46:07 -0500 - dagster - WARNING - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - ⚠️ Low extraction success rate: 0.0%. Check Textract results or PDF quality.
+2025-11-03 21:46:07 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - extract_raw_nabca_brand_leaders - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 21:46:07 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - extract_raw_nabca_brand_leaders - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_brand_leaders using PickledObjectFilesystemIOManager...
+2025-11-03 21:46:07 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - extract_raw_nabca_brand_leaders - ASSET_MATERIALIZATION - Materialized value extract_raw_nabca_brand_leaders.
+2025-11-03 21:46:07 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - extract_raw_nabca_brand_leaders - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-11-03 21:46:07 -0500 - dagster - DEBUG - __ASSET_JOB - 38f6bf95-a821-4aa5-99b1-51846aaa54a0 - 63888 - extract_raw_nabca_brand_leaders - STEP_SUCCESS - Finished execution of step "extract_raw_nabca_brand_leaders" in 1.33s.

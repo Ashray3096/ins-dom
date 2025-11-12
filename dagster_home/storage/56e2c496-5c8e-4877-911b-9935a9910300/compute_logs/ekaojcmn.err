@@ -1,0 +1,10 @@
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - LOGS_CAPTURED - Started capturing logs in process (pid: 31753).
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - STEP_START - Started execution of step "load_raw_ttb_ai".
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - load_raw_ttb_ai - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_ttb_ai using PickledObjectFilesystemIOManager...
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - LOADED_INPUT - Loaded input "extract_raw_ttb_ai" using input manager "io_manager"
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - STEP_INPUT - Got input "extract_raw_ttb_ai" of type "Dict[String,Any]". (Type check passed).
+2025-10-29 10:31:38 -0400 - dagster - INFO - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - load_raw_ttb_ai - Starting load for raw_ttb_ai
+2025-10-29 10:31:38 -0400 - dagster - WARNING - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - load_raw_ttb_ai - No records to load
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - ASSET_MATERIALIZATION - Materialized value load_raw_ttb_ai.
+2025-10-29 10:31:38 -0400 - dagster - DEBUG - __ASSET_JOB - 56e2c496-5c8e-4877-911b-9935a9910300 - 31753 - load_raw_ttb_ai - STEP_SUCCESS - Finished execution of step "load_raw_ttb_ai" in 113ms.

@@ -1,0 +1,521 @@
+🚀 Starting Dagster...
+✅ Virtual environment activated
+📦 Loading environment variables from .env.local...
+  ✓ Environment variables loaded
+📁 DAGSTER_HOME: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home
+
+✅ Dagster installed (dagster, version 1.11.16)
+
+🌐 Starting Dagster UI at http://localhost:3002
+
+Press Ctrl+C to stop
+
+[32m2025-11-03 23:41:10 -0500[0m - dagster - [34mWARNING[0m - No dagster instance configuration file (dagster.yaml) found at /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home. Defaulting to loading and storing all metadata with /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home. If this is the desired behavior, create an empty dagster.yaml file in /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home.
+[32m2025-11-03 23:41:10 -0500[0m - dagster - [34mINFO[0m - Launching Dagster services...
+[32m2025-11-03 23:41:11 -0500[0m - dagster.daemon - [34mINFO[0m - Instance is configured with the following daemons: ['AssetDaemon', 'BackfillDaemon', 'QueuedRunCoordinatorDaemon', 'SchedulerDaemon', 'SensorDaemon']
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762231271.640963 5004949 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:41:11 -0500[0m - dagster-webserver - [34mINFO[0m - Serving dagster-webserver on http://0.0.0.0:3002 in process 69342
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762231577.535742 5004895 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+📦 Found 2 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+[32m2025-11-03 23:46:18 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-03 23:47:19 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762231640.065690 5017881 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+📦 Found 3 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+I0000 00:00:1762231640.069747 5017881 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:47:20 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-03 23:47:20 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69666 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-03 23:47:20 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69666 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 69666)
+2025-11-03 23:47:20 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69666 - extract_raw_nabca_brand_leaders - STEP_WORKER_STARTING - Launching subprocess for "extract_raw_nabca_brand_leaders".
+📦 Found 3 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:47:20 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - STEP_WORKER_STARTED - Executing step "extract_raw_nabca_brand_leaders" in subprocess.
+2025-11-03 23:47:21 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-03 23:47:21 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 3 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:47:21 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - LOGS_CAPTURED - Started capturing logs in process (pid: 69668).
+2025-11-03 23:47:21 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - STEP_START - Started execution of step "extract_raw_nabca_brand_leaders".
+2025-11-03 23:47:21 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Starting NABCA extraction for raw_nabca_brand_leaders
+2025-11-03 23:47:21 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Section: Brand Leaders, Pages: 3-4
+2025-11-03 23:47:21 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Found 1 PDF artifacts to process
+2025-11-03 23:47:21 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Processing artifact: 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:47:21 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Downloading from S3: s3://nabca-data/raw-pdfs/631_9L_0125.PDF
+2025-11-03 23:47:22 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Extracting pages 3-4...
+2025-11-03 23:47:22 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - PDF has 718 pages, extracting pages 3-4
+2025-11-03 23:47:22 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Uploading to S3: s3://inspector-dom-textract/textract-temp/nabca-extraction/3e73a850-bfe5-4245-8a13-b20d1c89e5c7/section.pdf
+2025-11-03 23:47:22 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Starting Textract async analysis...
+2025-11-03 23:47:22 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Textract job started: 26fc55ee23ad0adfff34494e1d22ac60134ce74790554a48df3801b0b5f694d5
+2025-11-03 23:47:27 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Textract job status: IN_PROGRESS (waited 5s)
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Textract job completed after 10s
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Retrieving all Textract blocks...
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Retrieved 3102 blocks from Textract
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Textract complete: 2 tables detected
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Processing 2 tables...
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Table 1: 53 rows
+2025-11-03 23:47:33 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Table 2: 53 rows
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -     Skipping 3 header rows, merging 50 data rows
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Merged table data: 103 total rows
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 📊 RAW TABLE DATA (103 rows total):
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 0: ['ALL CONTROL STATES-JANUARY', '2025', '']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 1: ['', '', '']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 2: ['BRAND', 'Type', 'Rank']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 3: ['TITO HANDMADE', 'VODKA-CLASSIC-DOM', '1']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 4: ['FIREBALL CINNMN', 'CAN-US BLND-US BTLD', '2']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 5: ['J DNL BLACK LBL', 'DOM WHSKY-STRT-BRBN/TN', '3']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 6: ['CPTMRG ORG SPCD', 'RUM-FLVRD', '4']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 7: ['JIM BEAM', 'DOM WHSKY-STRT-BRBN/TN', '5']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 8: ['PLATINUM 7X', 'VODKA-CLASSIC-DOM', '6']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 9: ['JAMESON', 'IRISH-BLND', '7']... (showing first 3 cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 0: 2 non-empty cells
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 1: 6 non-empty cells
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 2: 9 non-empty cells
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 3: 9 non-empty cells
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -   Row 4: 9 non-empty cells
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Detected header row at index 2 (has 9 non-empty cells)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 📋 Headers: ['BRAND', 'Type', 'Rank', '% Total', 'Case Sales', '+ or Last Year', 'Case Sales', '+ or Last Year', 'Case Sales Last Twelve Months']
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 📈 Data rows: 100
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Table has 9 columns and 100 data rows
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 📋 Textract Headers: ['BRAND', 'Type', 'Rank', '% Total', 'Case Sales', '+ or Last Year', 'Case Sales', '+ or Last Year', 'Case Sales Last Twelve Months']
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 🎯 Semantic Fields: ['brand (brand)', 'type (type)', 'ytd_rank (ytd_rank)', 'ytd_pct_total (ytd_pct_total)', 'ytd_case_sales (ytd_case_sales)', 'ytd_vs_last_year (ytd_vs_last_year)', 'current_month_case_sales (current_month_case_sales)', 'current_month_vs_last_year (current_month_vs_last_year)', 'l12m_case_sales (l12m_case_sales)']
+2025-11-03 23:47:34 -0500 - dagster - WARNING - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ⚠️  Duplicate headers detected! Using positional mapping.
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders -     Headers: ['BRAND', 'Type', 'Rank', '% Total', 'Case Sales', '+ or Last Year', 'Case Sales', '+ or Last Year', 'Case Sales Last Twelve Months']
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 0 -> 'brand' (brand)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 1 -> 'type' (type)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 2 -> 'ytd_rank' (ytd_rank)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 3 -> 'ytd_pct_total' (ytd_pct_total)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 4 -> 'ytd_case_sales' (ytd_case_sales)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 5 -> 'ytd_vs_last_year' (ytd_vs_last_year)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 6 -> 'current_month_case_sales' (current_month_case_sales)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 7 -> 'current_month_vs_last_year' (current_month_vs_last_year)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - ✅ Positional mapping: column 8 -> 'l12m_case_sales' (l12m_case_sales)
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - 📊 Column Mapping Complete: 9 of 9 columns mapped
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Mapping: {0: 'brand', 1: 'type', 2: 'ytd_rank', 3: 'ytd_pct_total', 4: 'ytd_case_sales', 5: 'ytd_vs_last_year', 6: 'current_month_case_sales', 7: 'current_month_vs_last_year', 8: 'l12m_case_sales'}
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Extracted 100 valid records
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Extracted 100 records from artifact 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:47:34 -0500 - dagster - INFO - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - NABCA extraction complete: 100 records from 1 artifacts, 0 failed (100.0% success rate)
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - extract_raw_nabca_brand_leaders - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_brand_leaders using PickledObjectFilesystemIOManager...
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - ASSET_MATERIALIZATION - Materialized value extract_raw_nabca_brand_leaders.
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69668 - extract_raw_nabca_brand_leaders - STEP_SUCCESS - Finished execution of step "extract_raw_nabca_brand_leaders" in 12.98s.
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69666 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 13.66s (pid: 69666)
+2025-11-03 23:47:34 -0500 - dagster - DEBUG - __ASSET_JOB - a1bc821a-396a-480e-9909-e54582c947d8 - 69666 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+[32m2025-11-03 23:48:05 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+I0000 00:00:1762231685.502524 5017881 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:48:05 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69683 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69683 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 69683)
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69683 - load_raw_nabca_brand_leaders - STEP_WORKER_STARTING - Launching subprocess for "load_raw_nabca_brand_leaders".
+📦 Found 3 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - STEP_WORKER_STARTED - Executing step "load_raw_nabca_brand_leaders" in subprocess.
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 3 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - LOGS_CAPTURED - Started capturing logs in process (pid: 69685).
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - STEP_START - Started execution of step "load_raw_nabca_brand_leaders".
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - load_raw_nabca_brand_leaders - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_brand_leaders using PickledObjectFilesystemIOManager...
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - LOADED_INPUT - Loaded input "extract_raw_nabca_brand_leaders" using input manager "io_manager"
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - STEP_INPUT - Got input "extract_raw_nabca_brand_leaders" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:48:06 -0500 - dagster - INFO - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - load_raw_nabca_brand_leaders - Starting load for raw_nabca_brand_leaders
+2025-11-03 23:48:06 -0500 - dagster - INFO - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - load_raw_nabca_brand_leaders - Cleaned 100 records (removed metadata, converted types)
+2025-11-03 23:48:06 -0500 - dagster - INFO - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - load_raw_nabca_brand_leaders - Loaded batch 1: 100 records
+2025-11-03 23:48:06 -0500 - dagster - INFO - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - load_raw_nabca_brand_leaders - Load complete: 100 loaded, 0 failed (100.0% success rate)
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_brand_leaders.
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69685 - load_raw_nabca_brand_leaders - STEP_SUCCESS - Finished execution of step "load_raw_nabca_brand_leaders" in 212ms.
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69683 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 877ms (pid: 69683)
+2025-11-03 23:48:06 -0500 - dagster - DEBUG - __ASSET_JOB - 12fd5483-03e9-44d1-83f5-762b7e1d50f1 - 69683 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+I0000 00:00:1762232341.788072 5004895 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:59:03 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-03 23:59:12 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762232352.305746 5049086 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+I0000 00:00:1762232352.309363 5049086 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:59:12 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69815 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69815 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 69815)
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69815 - extract_raw_nabca_table_2 - STEP_WORKER_STARTING - Launching subprocess for "extract_raw_nabca_table_2".
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - STEP_WORKER_STARTED - Executing step "extract_raw_nabca_table_2" in subprocess.
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - LOGS_CAPTURED - Started capturing logs in process (pid: 69817).
+2025-11-03 23:59:13 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - STEP_START - Started execution of step "extract_raw_nabca_table_2".
+2025-11-03 23:59:13 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Starting NABCA extraction for raw_nabca_table_2
+2025-11-03 23:59:13 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Section: Current Month Sales, Pages: 5-6
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Found 1 PDF artifacts to process
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Processing artifact: 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Downloading from S3: s3://nabca-data/raw-pdfs/631_9L_0125.PDF
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Extracting pages 5-6...
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - PDF has 718 pages, extracting pages 5-6
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Uploading to S3: s3://inspector-dom-textract/textract-temp/nabca-extraction/3e73a850-bfe5-4245-8a13-b20d1c89e5c7/section.pdf
+2025-11-03 23:59:14 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Starting Textract async analysis...
+2025-11-03 23:59:15 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Textract job started: 499a9a91ff9d7811d165b67543720707c3478e4ffcc365b6fc550a4c14080d07
+2025-11-03 23:59:20 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Textract job status: IN_PROGRESS (waited 5s)
+2025-11-03 23:59:25 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Textract job completed after 10s
+2025-11-03 23:59:25 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Retrieving all Textract blocks...
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Retrieved 3011 blocks from Textract
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Textract complete: 2 tables detected
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Processing 2 tables...
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Table 1: 50 rows
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Table 2: 44 rows
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -     Skipping 2 header rows, merging 42 data rows
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Merged table data: 92 total rows
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 📊 RAW TABLE DATA (92 rows total):
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 0: ['', '%Total', '% of']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 1: ['CLASS', 'Dist. Spirits', 'Class']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 2: ['DOM WHSKY-BLND', '', '26.15']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 3: ['DOM WHSKY-SNGL MALT', '', '.03']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 4: ['DOM WHSKY-STRT-BRBN/TN', '', '55.27']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 5: ['DOM WHSKY-STRT-OTH', '', '2.06']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 6: ['DOM WHSKY-STRT-RYE', '', '3.92']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 7: ['DOM WHSKY-STRT-SM BTCH', '', '12.56']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 8: ['TOTAL DOM WHSKY', '16.50', '100.00']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 9: ['SCOTCH-BLND-FRGN BTLD', '', '59.99']... (showing first 3 cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 0: 5 non-empty cells
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 1: 12 non-empty cells
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 2: 11 non-empty cells
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 3: 4 non-empty cells
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -   Row 4: 11 non-empty cells
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Detected header row at index 1 (has 12 non-empty cells)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 📋 Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 📈 Data rows: 90
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Table has 12 columns and 90 data rows
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 📋 Textract Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 🎯 Semantic Fields: ['class (class)', 'pct_total_dist_spirits (pct_total_dist_spirits)', 'pct_of_class (pct_of_class)', 'total_cases (total_cases)', 'bottle_1_75l (bottle_1_75l)', 'bottle_1_0l (bottle_1_0l)', 'bottle_750ml (bottle_750ml)', 'bottle_750ml_traveler (bottle_750ml_traveler)', 'bottle_375ml (bottle_375ml)', 'bottle_200ml (bottle_200ml)', 'bottle_100ml (bottle_100ml)', 'bottle_50ml (bottle_50ml)']
+2025-11-03 23:59:26 -0500 - dagster - WARNING - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ⚠️  Duplicate headers detected! Using positional mapping.
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 -     Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 0 -> 'class' (class)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 1 -> 'pct_total_dist_spirits' (pct_total_dist_spirits)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 2 -> 'pct_of_class' (pct_of_class)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 3 -> 'total_cases' (total_cases)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 4 -> 'bottle_1_75l' (bottle_1_75l)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 5 -> 'bottle_1_0l' (bottle_1_0l)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 6 -> 'bottle_750ml' (bottle_750ml)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 7 -> 'bottle_750ml_traveler' (bottle_750ml_traveler)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 8 -> 'bottle_375ml' (bottle_375ml)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 9 -> 'bottle_200ml' (bottle_200ml)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 10 -> 'bottle_100ml' (bottle_100ml)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - ✅ Positional mapping: column 11 -> 'bottle_50ml' (bottle_50ml)
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - 📊 Column Mapping Complete: 12 of 12 columns mapped
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Mapping: {0: 'class', 1: 'pct_total_dist_spirits', 2: 'pct_of_class', 3: 'total_cases', 4: 'bottle_1_75l', 5: 'bottle_1_0l', 6: 'bottle_750ml', 7: 'bottle_750ml_traveler', 8: 'bottle_375ml', 9: 'bottle_200ml', 10: 'bottle_100ml', 11: 'bottle_50ml'}
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Extracted 90 valid records
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Extracted 90 records from artifact 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-03 23:59:26 -0500 - dagster - INFO - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - NABCA extraction complete: 90 records from 1 artifacts, 0 failed (100.0% success rate)
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - extract_raw_nabca_table_2 - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_2 using PickledObjectFilesystemIOManager...
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - ASSET_MATERIALIZATION - Materialized value extract_raw_nabca_table_2.
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69817 - extract_raw_nabca_table_2 - STEP_SUCCESS - Finished execution of step "extract_raw_nabca_table_2" in 12.94s.
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69815 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 13.58s (pid: 69815)
+2025-11-03 23:59:26 -0500 - dagster - DEBUG - __ASSET_JOB - 709b9c6a-c0aa-4c85-85b6-c38e26224aa9 - 69815 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+[32m2025-11-03 23:59:32 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+I0000 00:00:1762232372.621766 5049735 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-03 23:59:33 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69826 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69826 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 69826)
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69826 - load_raw_nabca_table_2 - STEP_WORKER_STARTING - Launching subprocess for "load_raw_nabca_table_2".
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - STEP_WORKER_STARTED - Executing step "load_raw_nabca_table_2" in subprocess.
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - LOGS_CAPTURED - Started capturing logs in process (pid: 69828).
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - STEP_START - Started execution of step "load_raw_nabca_table_2".
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_2 using PickledObjectFilesystemIOManager...
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - LOADED_INPUT - Loaded input "extract_raw_nabca_table_2" using input manager "io_manager"
+2025-11-03 23:59:33 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - STEP_INPUT - Got input "extract_raw_nabca_table_2" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:59:33 -0500 - dagster - INFO - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Starting load for raw_nabca_table_2
+2025-11-03 23:59:33 -0500 - dagster - INFO - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Cleaned 90 records (removed metadata, converted types)
+2025-11-03 23:59:33 -0500 - dagster - ERROR - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Batch insert failed: {'message': 'invalid input syntax for type numeric: "YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-03 23:59:38 -0500 - dagster - ERROR - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-03 23:59:38 -0500 - dagster - ERROR - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "LAST YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-03 23:59:38 -0500 - dagster - ERROR - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "DECREASE"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-03 23:59:38 -0500 - dagster - INFO - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - load_raw_nabca_table_2 - Load complete: 87 loaded, 3 failed (96.7% success rate)
+2025-11-03 23:59:38 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-03 23:59:38 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_table_2.
+2025-11-03 23:59:38 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69828 - load_raw_nabca_table_2 - STEP_SUCCESS - Finished execution of step "load_raw_nabca_table_2" in 4.86s.
+2025-11-03 23:59:38 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69826 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 5.5s (pid: 69826)
+2025-11-03 23:59:38 -0500 - dagster - DEBUG - __ASSET_JOB - 2a917863-e5b9-41c1-88b2-8d3b9ecfd130 - 69826 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+[32m2025-11-04 00:20:52 -0500[0m - dagster.code_server - [34mWARNING[0m - No heartbeat received in 30 seconds, shutting down
+[32m2025-11-04 00:38:11 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 00:38:11 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 00:51:46 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 00:51:47 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 00:51:47 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_ERROR event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 00:51:47 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 00:51:57 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_ERROR event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 00:51:57 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 01:08:12 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 01:08:12 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 01:10:59 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 01:10:59 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 01:13:39 -0500[0m - dagster.code_server - [34mWARNING[0m - No heartbeat received in 45 seconds, shutting down
+[32m2025-11-04 01:13:41 -0500[0m - dagster._cli.proxy_server_manager - [34mWARNING[0m - Code server process has exited with code 0. Restarting the code server process.
+[32m2025-11-04 01:13:41 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 01:13:42 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 01:13:43 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 01:47:13 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 02:02:45 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 02:04:19 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 02:22:08 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 02:55:54 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 03:12:35 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 03:12:35 -0500[0m - dagster.code_server - [34mWARNING[0m - No heartbeat received in 45 seconds, shutting down
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+[32m2025-11-04 03:29:33 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 03:29:33 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 03:29:33 -0500[0m - dagster._cli.proxy_server_manager - [34mWARNING[0m - Code server process has exited with code 0. Restarting the code server process.
+[32m2025-11-04 03:29:34 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 03:29:35 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 03:31:53 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 03:48:44 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 04:15:42 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 04:32:12 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 04:48:41 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 05:05:22 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 05:21:46 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 05:21:47 -0500[0m - dagster.code_server - [34mWARNING[0m - No heartbeat received in 45 seconds, shutting down
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+[32m2025-11-04 05:37:08 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 05:37:08 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 05:37:09 -0500[0m - dagster._cli.proxy_server_manager - [34mWARNING[0m - Code server process has exited with code 0. Restarting the code server process.
+[32m2025-11-04 05:37:11 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 05:37:11 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 05:53:02 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 05:59:49 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 06:17:37 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 06:34:45 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 06:52:14 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 07:08:59 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 07:26:14 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 07:43:18 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 07:43:20 -0500[0m - dagster.code_server - [34mWARNING[0m - No heartbeat received in 45 seconds, shutting down
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+[32m2025-11-04 08:00:27 -0500[0m - dagster - [34mWARNING[0m - /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/workspace/context.py:1093: UserWarning: Error loading repository location inspector_dom_pipelines
+  warnings.warn(f"Error loading repository location {location_name}")
+
+[32m2025-11-04 08:00:27 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 08:00:29 -0500[0m - dagster._cli.proxy_server_manager - [34mWARNING[0m - Code server process has exited with code 0. Restarting the code server process.
+[32m2025-11-04 08:00:31 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 08:00:31 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 08:17:27 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 08:34:37 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 08:51:15 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+[32m2025-11-04 09:01:28 -0500[0m - dagster.daemon - [34mWARNING[0m - The following threads have not sent heartbeats in more than 1800 seconds: ['BACKFILL', 'SCHEDULER']. They may be running more slowly than expected or hanging.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762267456.601816 5081907 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+📦 Found 4 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+[32m2025-11-04 09:44:17 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing
+[32m2025-11-04 09:44:30 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1762267470.308604 5187471 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+📦 Found 5 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_3_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+I0000 00:00:1762267470.315453 5187471 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[32m2025-11-04 09:44:30 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70605 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70605 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 70605)
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70605 - extract_raw_nabca_table_3 - STEP_WORKER_STARTING - Launching subprocess for "extract_raw_nabca_table_3".
+📦 Found 5 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_3_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - STEP_WORKER_STARTED - Executing step "extract_raw_nabca_table_3" in subprocess.
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 5 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_3_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - LOGS_CAPTURED - Started capturing logs in process (pid: 70607).
+2025-11-04 09:44:31 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - STEP_START - Started execution of step "extract_raw_nabca_table_3".
+2025-11-04 09:44:31 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Starting NABCA extraction for raw_nabca_table_3
+2025-11-04 09:44:31 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Section: YTD Sales, Pages: 7-8
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Found 1 PDF artifacts to process
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Processing artifact: 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Downloading from S3: s3://nabca-data/raw-pdfs/631_9L_0125.PDF
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Extracting pages 7-8...
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - PDF has 718 pages, extracting pages 7-8
+2025-11-04 09:44:32 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Uploading to S3: s3://inspector-dom-textract/textract-temp/nabca-extraction/3e73a850-bfe5-4245-8a13-b20d1c89e5c7/section.pdf
+2025-11-04 09:44:33 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Starting Textract async analysis...
+2025-11-04 09:44:33 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Textract job started: 4214d3e8bfdae5890da5fc93b289e48b70ef24e2a3cffd161af00b108f95f4c5
+2025-11-04 09:44:38 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Textract job status: IN_PROGRESS (waited 5s)
+2025-11-04 09:44:43 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Textract job status: IN_PROGRESS (waited 10s)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Textract job completed after 15s
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Retrieving all Textract blocks...
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Retrieved 3003 blocks from Textract
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Textract complete: 2 tables detected
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Processing 2 tables...
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Table 1: 50 rows
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Table 2: 44 rows
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -     Skipping 2 header rows, merging 42 data rows
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Merged table data: 92 total rows
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 📊 RAW TABLE DATA (92 rows total):
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 0: ['', '%Total', '% of']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 1: ['CLASS', 'Dist. Spirits', 'Class']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 2: ['DOM WHSKY-BLND', '', '26.15']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 3: ['DOM WHSKY-SNGL MALT', '', '.03']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 4: ['DOM WHSKY-STRT-BRBN/TN', '', '55.27']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 5: ['DOM WHSKY-STRT-OTH', '', '2.06']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 6: ['DOM WHSKY-STRT-RYE', '', '3.92']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 7: ['DOM WHSKY-STRT-SM BTCH', '', '12.56']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 8: ['TOTAL DOM WHSKY', '16.50', '100.00']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 9: ['SCOTCH-BLND-FRGN BTLD', '', '59.99']... (showing first 3 cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 0: 5 non-empty cells
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 1: 12 non-empty cells
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 2: 11 non-empty cells
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 3: 4 non-empty cells
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -   Row 4: 11 non-empty cells
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Detected header row at index 1 (has 12 non-empty cells)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 📋 Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 📈 Data rows: 90
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Table has 12 columns and 90 data rows
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 📋 Textract Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 🎯 Semantic Fields: ['class (class)', 'pct_total_dist_spirits (pct_total_dist_spirits)', 'pct_of_class (pct_of_class)', 'total_cases (total_cases)', 'bottle_1_75l (bottle_1_75l)', 'bottle_1_0l (bottle_1_0l)', 'bottle_750ml (bottle_750ml)', 'bottle_750ml_traveler (bottle_750ml_traveler)', 'bottle_375ml (bottle_375ml)', 'bottle_200ml (bottle_200ml)', 'bottle_100ml (bottle_100ml)', 'bottle_50ml (bottle_50ml)']
+2025-11-04 09:44:49 -0500 - dagster - WARNING - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ⚠️  Duplicate headers detected! Using positional mapping.
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 -     Headers: ['CLASS', 'Dist. Spirits', 'Class', 'Cases', '1.75 L', '1.0 L', '750 ml', '750 ml Traveler', '375 ml', '200 ml', '100 ml', '50 ml']
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 0 -> 'class' (class)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 1 -> 'pct_total_dist_spirits' (pct_total_dist_spirits)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 2 -> 'pct_of_class' (pct_of_class)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 3 -> 'total_cases' (total_cases)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 4 -> 'bottle_1_75l' (bottle_1_75l)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 5 -> 'bottle_1_0l' (bottle_1_0l)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 6 -> 'bottle_750ml' (bottle_750ml)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 7 -> 'bottle_750ml_traveler' (bottle_750ml_traveler)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 8 -> 'bottle_375ml' (bottle_375ml)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 9 -> 'bottle_200ml' (bottle_200ml)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 10 -> 'bottle_100ml' (bottle_100ml)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - ✅ Positional mapping: column 11 -> 'bottle_50ml' (bottle_50ml)
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - 📊 Column Mapping Complete: 12 of 12 columns mapped
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Mapping: {0: 'class', 1: 'pct_total_dist_spirits', 2: 'pct_of_class', 3: 'total_cases', 4: 'bottle_1_75l', 5: 'bottle_1_0l', 6: 'bottle_750ml', 7: 'bottle_750ml_traveler', 8: 'bottle_375ml', 9: 'bottle_200ml', 10: 'bottle_100ml', 11: 'bottle_50ml'}
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Extracted 90 valid records
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Extracted 90 records from artifact 3e73a850-bfe5-4245-8a13-b20d1c89e5c7
+2025-11-04 09:44:49 -0500 - dagster - INFO - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - NABCA extraction complete: 90 records from 1 artifacts, 0 failed (100.0% success rate)
+2025-11-04 09:44:49 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - STEP_OUTPUT - Yielded output "result" of type "Dict[String,Any]". (Type check passed).
+2025-11-04 09:44:49 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - extract_raw_nabca_table_3 - Writing file at: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_3 using PickledObjectFilesystemIOManager...
+2025-11-04 09:44:49 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - ASSET_MATERIALIZATION - Materialized value extract_raw_nabca_table_3.
+2025-11-04 09:44:49 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2025-11-04 09:44:49 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70607 - extract_raw_nabca_table_3 - STEP_SUCCESS - Finished execution of step "extract_raw_nabca_table_3" in 18.16s.
+2025-11-04 09:44:50 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70605 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 19.05s (pid: 70605)
+2025-11-04 09:44:50 -0500 - dagster - DEBUG - __ASSET_JOB - 51f33137-6607-4817-83e2-d98677ccd840 - 70605 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+[32m2025-11-04 09:44:55 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Priority sorting and checking tag concurrency limits for queued runs.
+[32m2025-11-04 09:44:57 -0500[0m - dagster.daemon.QueuedRunCoordinatorDaemon - [34mINFO[0m - Launched 1 runs.
+2025-11-04 09:44:57 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70617 - RUN_START - Started execution of run for "__ASSET_JOB".
+2025-11-04 09:44:57 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70617 - ENGINE_EVENT - Executing steps using multiprocess executor: parent process (pid: 70617)
+2025-11-04 09:44:57 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70617 - load_raw_nabca_table_3 - STEP_WORKER_STARTING - Launching subprocess for "load_raw_nabca_table_3".
+📦 Found 5 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_3_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-04 09:44:57 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - STEP_WORKER_STARTED - Executing step "load_raw_nabca_table_3" in subprocess.
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - RESOURCE_INIT_STARTED - Starting initialization of resources [io_manager].
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - RESOURCE_INIT_SUCCESS - Finished initialization of resources [io_manager].
+📦 Found 5 deployed pipeline(s):
+   ✓ raw_ttb_ai_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_brand_leaders_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_3_v1.py - Loaded 2 asset(s)
+   ✓ raw_nabca_table_2_v1.py - Loaded 2 asset(s)
+   ✓ raw_ttb_v1.py - Loaded 2 asset(s)
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - LOGS_CAPTURED - Started capturing logs in process (pid: 70619).
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - STEP_START - Started execution of step "load_raw_nabca_table_3".
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_3 using PickledObjectFilesystemIOManager...
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - LOADED_INPUT - Loaded input "extract_raw_nabca_table_3" using input manager "io_manager"
+2025-11-04 09:44:58 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - STEP_INPUT - Got input "extract_raw_nabca_table_3" of type "Dict[String,Any]". (Type check passed).
+2025-11-04 09:44:58 -0500 - dagster - INFO - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Starting load for raw_nabca_table_3
+2025-11-04 09:44:58 -0500 - dagster - INFO - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Cleaned 90 records (removed metadata, converted types)
+2025-11-04 09:44:58 -0500 - dagster - ERROR - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Batch insert failed: {'message': 'invalid input syntax for type numeric: "YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-04 09:45:03 -0500 - dagster - ERROR - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-04 09:45:03 -0500 - dagster - ERROR - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "LAST YEAR"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-04 09:45:03 -0500 - dagster - ERROR - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Failed to insert record: {'message': 'invalid input syntax for type numeric: "DECREASE"', 'code': '22P02', 'hint': None, 'details': None}
+2025-11-04 09:45:03 -0500 - dagster - INFO - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - load_raw_nabca_table_3 - Load complete: 87 loaded, 3 failed (96.7% success rate)
+2025-11-04 09:45:03 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-04 09:45:03 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_table_3.
+2025-11-04 09:45:03 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70619 - load_raw_nabca_table_3 - STEP_SUCCESS - Finished execution of step "load_raw_nabca_table_3" in 5.95s.
+2025-11-04 09:45:04 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70617 - ENGINE_EVENT - Multiprocess executor: parent process exiting after 6.96s (pid: 70617)
+2025-11-04 09:45:04 -0500 - dagster - DEBUG - __ASSET_JOB - ae0d5c66-5791-410b-a7f8-ec85596ffa11 - 70617 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
+[32m2025-11-04 12:41:00 -0500[0m - dagster-webserver - [34mINFO[0m - Received LocationStateChangeEventType.LOCATION_UPDATED event for location inspector_dom_pipelines, refreshing

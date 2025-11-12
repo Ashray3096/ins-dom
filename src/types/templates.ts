@@ -5,6 +5,8 @@
  */
 
 export type TemplateStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
+export type ExtractionMethod = 'ai' | 'visual' | 'hybrid';
+export type ArtifactType = 'pdf' | 'html' | 'email' | 'json';
 
 export interface TemplateField {
   name: string;
@@ -12,6 +14,35 @@ export interface TemplateField {
   type: 'string' | 'number' | 'date' | 'boolean';
   required: boolean;
   example?: string;
+}
+
+export interface FieldSelector {
+  cssSelector?: string;
+  xpath?: string;
+  sampleValue: string;
+  elementInfo?: {
+    tagName: string;
+    className: string;
+    id: string;
+  };
+}
+
+export interface TemplateSelectors {
+  fields: Record<string, FieldSelector>;
+}
+
+export interface CorrectionStatistics {
+  totalFields: number;
+  correctedFields: number;
+  correctedRows: number;
+  correctionRate: number;
+}
+
+export interface TemplateCorrections {
+  corrections: Record<string, Record<string, boolean>>;
+  originalData: Record<string, any>[];
+  correctedData: Record<string, any>[];
+  statistics: CorrectionStatistics;
 }
 
 export interface Template {
@@ -26,6 +57,12 @@ export interface Template {
   created_at: string;
   updated_at: string;
   created_by: string;
+  // New fields for template learning
+  selectors?: TemplateSelectors;
+  corrections?: TemplateCorrections;
+  extraction_method?: ExtractionMethod;
+  artifact_type?: ArtifactType;
+  sample_artifact_id?: string;
 }
 
 export interface CreateTemplateInput {
@@ -35,6 +72,11 @@ export interface CreateTemplateInput {
   prompt: string;
   fields: TemplateField[];
   status?: TemplateStatus;
+  selectors?: TemplateSelectors;
+  corrections?: TemplateCorrections;
+  extraction_method?: ExtractionMethod;
+  artifact_type?: ArtifactType;
+  sample_artifact_id?: string;
 }
 
 export interface UpdateTemplateInput {
@@ -43,6 +85,9 @@ export interface UpdateTemplateInput {
   prompt?: string;
   fields?: TemplateField[];
   status?: TemplateStatus;
+  selectors?: TemplateSelectors;
+  corrections?: TemplateCorrections;
+  extraction_method?: ExtractionMethod;
 }
 
 /**

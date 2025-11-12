@@ -3,14 +3,141 @@
 /**
  * Pipelines Page
  *
- * Set up automated extraction pipelines with Dagster
+ * List and manage data pipelines
  */
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Plus, Activity, Play, Pause } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import {
+  Plus,
+  Play,
+  Pause,
+  Activity,
+  Loader2,
+  Clock,
+  Eye,
+} from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { toast } from 'sonner';
+
+interface Pipeline {
+  id: string;
+  name: string;
+  description: string | null;
+  is_active: boolean;
+  schedule: string | null;
+  last_run_at: string | null;
+  next_run_at: string | null;
+  created_at: string;
+  provider: {
+    id: string;
+    name: string;
+    type: string;
+  } | null;
+  template: {
+    id: string;
+    name: string;
+  } | null;
+}
 
 export default function PipelinesPage() {
+  const [pipelines, setPipelines] = useState<Pipeline[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadPipelines();
+  }, []);
+
+  const loadPipelines = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/pipelines');
+      if (!response.ok) throw new Error('Failed to fetch pipelines');
+      const data = await response.json();
+      setPipelines(data);
+    } catch (error) {
+      console.error('Error loading pipelines:', error);
+      toast.error('Failed to load pipelines');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleToggleActive = async (pipelineId: string, currentState: boolean) => {
+    try {
+      const response = await fetch(`/api/pipelines/${pipelineId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: !currentState }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update pipeline');
+
+      toast.success(currentState ? 'Pipeline paused' : 'Pipeline activated');
+      loadPipelines();
+    } catch (error) {
+      console.error('Error toggling pipeline:', error);
+      toast.error('Failed to update pipeline');
+    }
+  };
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Never';
+    return new Date(dateString).toLocaleString();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
+  if (pipelines.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Pipelines</h1>
+            <p className="mt-2 text-gray-600">
+              Automated data extraction pipelines
+            </p>
+          </div>
+          <Link href="/dashboard/pipelines/new">
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Create Pipeline
+            </Button>
+          </Link>
+        </div>
+
+        <Card className="p-16">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Activity className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              No pipelines yet
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              Create your first pipeline to start automatically processing documents.
+            </p>
+            <Link href="/dashboard/pipelines/new">
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Create Your First Pipeline
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -18,179 +145,119 @@ export default function PipelinesPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Pipelines</h1>
           <p className="mt-2 text-gray-600">
-            Set up automated extraction pipelines with Dagster
+            {pipelines.length} pipeline{pipelines.length !== 1 ? 's' : ''} configured
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Create Pipeline
-        </Button>
-      </div>
-
-      {/* Empty State */}
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-16">
-          <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
-            <Activity className="h-8 w-8 text-indigo-600" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            No pipelines yet
-          </h3>
-          <p className="text-gray-600 text-center mb-6 max-w-md">
-            Create your first pipeline to automate data extraction workflows.
-            Pipelines can run on a schedule or be triggered manually.
-          </p>
+        <Link href="/dashboard/pipelines/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Create Your First Pipeline
+            Create Pipeline
           </Button>
-        </CardContent>
-      </Card>
-
-      {/* Pipeline Features */}
-      <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Capabilities</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Scheduled Execution</CardTitle>
-              <CardDescription>Automate extraction on a schedule</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Run extractions automatically on a daily, weekly, or monthly basis.
-                Perfect for recurring data sources like NABCA monthly reports.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Manual Triggers</CardTitle>
-              <CardDescription>Run pipelines on demand</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Manually trigger pipelines whenever you need to process new files
-                or re-run extractions with updated templates.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Multi-Step Workflows</CardTitle>
-              <CardDescription>Chain multiple operations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Create complex workflows that combine file uploads, extractions,
-                validation, and data export in a single pipeline.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Monitoring & Logs</CardTitle>
-              <CardDescription>Track pipeline execution</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600">
-                Monitor pipeline runs in real-time with detailed logs, error
-                tracking, and execution history for debugging.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        </Link>
       </div>
 
-      {/* Pipeline Architecture */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Pipeline Architecture</CardTitle>
-          <CardDescription>How pipelines work in Inspector Dom</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center font-bold text-sm">
-                1
-              </div>
-              <div>
-                <div className="font-medium text-sm">Source Ingestion</div>
-                <div className="text-xs text-gray-600 mt-1">
-                  Automatically fetch files from providers or wait for manual uploads
+      {/* Pipelines List */}
+      <div className="grid gap-4">
+        {pipelines.map((pipeline) => (
+          <Card key={pipeline.id} className="p-6">
+            <div className="flex items-start justify-between">
+              {/* Main Info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {pipeline.name}
+                  </h3>
+                  <Badge
+                    variant={pipeline.is_active ? 'default' : 'secondary'}
+                    className={
+                      pipeline.is_active
+                        ? 'bg-green-500 hover:bg-green-600'
+                        : 'bg-gray-300'
+                    }
+                  >
+                    {pipeline.is_active ? 'Active' : 'Paused'}
+                  </Badge>
+                  {pipeline.schedule && (
+                    <Badge variant="outline" className="text-xs">
+                      <Clock className="w-3 h-3 mr-1" />
+                      Scheduled
+                    </Badge>
+                  )}
+                </div>
+
+                {pipeline.description && (
+                  <p className="text-sm text-gray-600 mb-3">
+                    {pipeline.description}
+                  </p>
+                )}
+
+                <div className="flex items-center gap-6 text-xs text-gray-500">
+                  {pipeline.provider && (
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium">Provider:</span>
+                      <span>{pipeline.provider.name}</span>
+                    </div>
+                  )}
+                  {pipeline.template && (
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium">Template:</span>
+                      <span>{pipeline.template.name}</span>
+                    </div>
+                  )}
+                  {pipeline.schedule && (
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium">Schedule:</span>
+                      <code className="bg-gray-100 px-1 py-0.5 rounded">
+                        {pipeline.schedule}
+                      </code>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-6 text-xs text-gray-500 mt-2">
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium">Last run:</span>
+                    <span>{formatDate(pipeline.last_run_at)}</span>
+                  </div>
+                  {pipeline.is_active && pipeline.next_run_at && (
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium">Next run:</span>
+                      <span>{formatDate(pipeline.next_run_at)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
 
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center font-bold text-sm">
-                2
-              </div>
-              <div>
-                <div className="font-medium text-sm">AI Extraction</div>
-                <div className="text-xs text-gray-600 mt-1">
-                  Apply templates to extract structured data using Claude AI
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center font-bold text-sm">
-                3
-              </div>
-              <div>
-                <div className="font-medium text-sm">Validation</div>
-                <div className="text-xs text-gray-600 mt-1">
-                  Validate extracted data against expected schemas and rules
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center font-bold text-sm">
-                4
-              </div>
-              <div>
-                <div className="font-medium text-sm">Storage & Export</div>
-                <div className="text-xs text-gray-600 mt-1">
-                  Store entities in database and optionally export to external systems
-                </div>
+              {/* Actions */}
+              <div className="flex items-center gap-2 ml-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleToggleActive(pipeline.id, pipeline.is_active)}
+                >
+                  {pipeline.is_active ? (
+                    <>
+                      <Pause className="w-4 h-4 mr-2" />
+                      Pause
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4 mr-2" />
+                      Activate
+                    </>
+                  )}
+                </Button>
+                <Link href={`/dashboard/pipelines/${pipeline.id}`}>
+                  <Button variant="outline" size="sm">
+                    <Eye className="w-4 h-4 mr-2" />
+                    View
+                  </Button>
+                </Link>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Pipeline Stats */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Pipeline Statistics</CardTitle>
-          <CardDescription>Overview of pipeline execution</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">0</div>
-              <div className="text-sm text-gray-600 mt-1">Total Pipelines</div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">0</div>
-              <div className="text-sm text-gray-600 mt-1">Runs Today</div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">0</div>
-              <div className="text-sm text-gray-600 mt-1">Active Pipelines</div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">0</div>
-              <div className="text-sm text-gray-600 mt-1">Failed Runs</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

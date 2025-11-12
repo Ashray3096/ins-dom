@@ -22,6 +22,8 @@ import {
   LogOut,
   Home,
   Settings,
+  Network,
+  BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +33,9 @@ const navigation = [
   { name: 'Sources', href: '/dashboard/sources', icon: Settings },
   { name: 'Artifacts', href: '/dashboard/artifacts', icon: FileText },
   { name: 'Templates', href: '/dashboard/templates', icon: Layout },
+  { name: 'Fields', href: '/dashboard/fields', icon: BookOpen },
   { name: 'Entities', href: '/dashboard/entities', icon: Wand2 },
+  { name: 'ER Diagram', href: '/dashboard/er-diagram', icon: Network },
   { name: 'Pipelines', href: '/dashboard/pipelines', icon: Activity },
 ];
 

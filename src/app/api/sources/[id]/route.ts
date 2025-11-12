@@ -14,10 +14,11 @@ import type { SourceUpdateData, SourceType } from '@/types/sources';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const {
@@ -35,7 +36,7 @@ export async function GET(
         *,
         provider:providers(id, name, type)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id)
       .single();
 
@@ -59,10 +60,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const {
@@ -101,7 +103,7 @@ export async function PUT(
     const { data, error } = await supabase
       .from('sources')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id)
       .select(`
         *,
@@ -129,10 +131,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
+    const { id } = await params;
 
     // Get authenticated user
     const {
@@ -148,7 +151,7 @@ export async function DELETE(
     const { data: source, error: fetchError } = await supabase
       .from('sources')
       .select('id')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id)
       .single();
 
@@ -165,7 +168,7 @@ export async function DELETE(
     const { data: artifacts, error: artifactsError } = await supabase
       .from('artifacts')
       .select('id')
-      .eq('source_id', params.id)
+      .eq('source_id', id)
       .limit(1);
 
     if (artifactsError) {
@@ -187,7 +190,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('sources')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('created_by', user.id);
 
     if (error) {

@@ -1,0 +1,24 @@
+2025-11-04 14:01:00 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - LOGS_CAPTURED - Started capturing logs in process (pid: 74690).
+2025-11-04 14:01:00 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - STEP_START - Started execution of step "load_raw_nabca_table_1".
+2025-11-04 14:01:00 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_table_1 using PickledObjectFilesystemIOManager...
+2025-11-04 14:01:00 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - LOADED_INPUT - Loaded input "extract_raw_nabca_table_1" using input manager "io_manager", from output "result" of step "extract_raw_nabca_table_1"
+2025-11-04 14:01:00 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - STEP_INPUT - Got input "extract_raw_nabca_table_1" of type "Dict[String,Any]". (Type check passed).
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Starting load for raw_nabca_table_1
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Cleaned 1300 records (removed metadata, converted types)
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 1: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 2: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 3: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 4: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 5: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 6: 100 records
+2025-11-04 14:01:00 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 7: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 8: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 9: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 10: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 11: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 12: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Loaded batch 13: 100 records
+2025-11-04 14:01:01 -0500 - dagster - INFO - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - load_raw_nabca_table_1 - Load complete: 1300 loaded, 0 failed (100.0% success rate)
+2025-11-04 14:01:01 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-04 14:01:01 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_table_1.
+2025-11-04 14:01:01 -0500 - dagster - DEBUG - __ASSET_JOB - cfe5511c-f8ea-409d-b6a2-03f04eb2e639 - 74690 - load_raw_nabca_table_1 - STEP_SUCCESS - Finished execution of step "load_raw_nabca_table_1" in 1.26s.

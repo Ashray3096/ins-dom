@@ -64,7 +64,19 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { name, description, provider_id, prompt, fields, status } = body;
+    const {
+      name,
+      description,
+      provider_id,
+      prompt,
+      fields,
+      status,
+      selectors,
+      corrections,
+      extraction_method,
+      artifact_type,
+      sample_artifact_id,
+    } = body;
 
     // Validate required fields
     if (!name || !prompt || !fields) {
@@ -99,6 +111,22 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // If sample_artifact_id is provided, verify it exists
+    if (sample_artifact_id) {
+      const { data: artifact, error: artifactError } = await supabase
+        .from('artifacts')
+        .select('id')
+        .eq('id', sample_artifact_id)
+        .single();
+
+      if (artifactError || !artifact) {
+        return NextResponse.json(
+          { error: 'Sample artifact not found' },
+          { status: 404 }
+        );
+      }
+    }
+
     // Create template
     const { data: template, error } = await supabase
       .from('templates')
@@ -108,8 +136,13 @@ export async function POST(request: NextRequest) {
         provider_id: provider_id || null,
         prompt,
         fields,
-        status: status || 'ACTIVE',
+        status: status || 'DRAFT',
         created_by: user.id,
+        selectors: selectors || null,
+        corrections: corrections || null,
+        extraction_method: extraction_method || 'ai',
+        artifact_type: artifact_type || null,
+        sample_artifact_id: sample_artifact_id || null,
       })
       .select()
       .single();

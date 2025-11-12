@@ -1,0 +1,48 @@
+2025-10-28 19:49:29 -0400 - dagster - DEBUG - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - 29348 - LOGS_CAPTURED - Started capturing logs in process (pid: 29348).
+2025-10-28 19:49:29 -0400 - dagster - DEBUG - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - 29348 - extract_raw_ttb - STEP_RESTARTED - Started re-execution (attempt # 4) of step "extract_raw_ttb".
+2025-10-28 19:49:29 -0400 - dagster - INFO - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - extract_raw_ttb - Starting extraction for raw_ttb
+2025-10-28 19:49:29 -0400 - dagster - ERROR - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - extract_raw_ttb - Extraction failed: supabase_url is required
+2025-10-28 19:49:29 -0400 - dagster - ERROR - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - extract_raw_ttb - Traceback (most recent call last):
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/pipelines/raw_ttb_v1.py", line 46, in extract_raw_ttb
+    supabase = create_client(
+               ^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 369, in create_client
+    return SyncClient.create(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 101, in create
+    client = cls(supabase_url, supabase_key, options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 53, in __init__
+    raise SupabaseException("supabase_url is required")
+supabase._sync.client.SupabaseException: supabase_url is required
+
+2025-10-28 19:49:29 -0400 - dagster - ERROR - __ASSET_JOB - ccafc51e-394b-4e98-b581-f61fc7dc5649 - 29348 - extract_raw_ttb - STEP_FAILURE - Execution of step "extract_raw_ttb" failed.
+
+Exceeded max_retries of 3:
+
+supabase._sync.client.SupabaseException: supabase_url is required
+
+Stack Trace:
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/pipelines/raw_ttb_v1.py", line 46, in extract_raw_ttb
+    supabase = create_client(
+               ^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 369, in create_client
+    return SyncClient.create(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 101, in create
+    client = cls(supabase_url, supabase_key, options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/venv/lib/python3.12/site-packages/supabase/_sync/client.py", line 53, in __init__
+    raise SupabaseException("supabase_url is required")
+

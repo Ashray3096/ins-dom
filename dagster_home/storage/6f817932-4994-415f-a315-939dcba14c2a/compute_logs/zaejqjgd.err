@@ -1,0 +1,12 @@
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - LOGS_CAPTURED - Started capturing logs in process (pid: 68345).
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - STEP_START - Started execution of step "load_raw_nabca_brand_leaders".
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - load_raw_nabca_brand_leaders - Loading file from: /Users/ashraykenguntejayachandra/claude-workspace/claude-sandbox/ins-dom/dagster_home/storage/extract_raw_nabca_brand_leaders using PickledObjectFilesystemIOManager...
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - LOADED_INPUT - Loaded input "extract_raw_nabca_brand_leaders" using input manager "io_manager"
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - STEP_INPUT - Got input "extract_raw_nabca_brand_leaders" of type "Dict[String,Any]". (Type check passed).
+2025-11-03 23:26:02 -0500 - dagster - INFO - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - load_raw_nabca_brand_leaders - Starting load for raw_nabca_brand_leaders
+2025-11-03 23:26:02 -0500 - dagster - INFO - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - load_raw_nabca_brand_leaders - Cleaned 93 records (removed metadata, converted types)
+2025-11-03 23:26:02 -0500 - dagster - INFO - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - load_raw_nabca_brand_leaders - Loaded batch 1: 93 records
+2025-11-03 23:26:02 -0500 - dagster - INFO - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - load_raw_nabca_brand_leaders - Load complete: 93 loaded, 0 failed (100.0% success rate)
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - ASSET_MATERIALIZATION - Materialized value load_raw_nabca_brand_leaders.
+2025-11-03 23:26:02 -0500 - dagster - DEBUG - __ASSET_JOB - 6f817932-4994-415f-a315-939dcba14c2a - 68345 - load_raw_nabca_brand_leaders - STEP_SUCCESS - Finished execution of step "load_raw_nabca_brand_leaders" in 212ms.

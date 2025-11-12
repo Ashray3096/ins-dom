@@ -20,6 +20,7 @@ import {
 import { Plus, RefreshCw, Settings, Trash2, Database, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { SourceCreateModal } from '@/components/sources/source-create-modal';
+import { S3BrowserModal } from '@/components/sources/s3-browser-modal';
 import type { Source } from '@/types/sources';
 
 interface Provider {
@@ -35,6 +36,8 @@ export default function SourcesPage() {
   const [loading, setLoading] = useState(true);
   const [loadingProviders, setLoadingProviders] = useState(true);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [s3BrowserOpen, setS3BrowserOpen] = useState(false);
+  const [selectedSource, setSelectedSource] = useState<Source | null>(null);
 
   useEffect(() => {
     fetchProviders();
@@ -84,6 +87,15 @@ export default function SourcesPage() {
       toast.error('Failed to load sources');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSyncClick = (source: Source) => {
+    if (source.source_type === 's3_bucket') {
+      setSelectedSource(source);
+      setS3BrowserOpen(true);
+    } else {
+      toast.info('Sync functionality for non-S3 sources coming soon!');
     }
   };
 
@@ -284,7 +296,7 @@ export default function SourcesPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => toast.info('Sync functionality coming next!')}
+                      onClick={() => handleSyncClick(source)}
                     >
                       Sync
                     </Button>
@@ -333,6 +345,14 @@ export default function SourcesPage() {
         onOpenChange={setCreateModalOpen}
         providers={providers}
         onSuccess={fetchSources}
+      />
+
+      {/* S3 Browser Modal */}
+      <S3BrowserModal
+        open={s3BrowserOpen}
+        onOpenChange={setS3BrowserOpen}
+        source={selectedSource}
+        onSyncComplete={fetchSources}
       />
     </div>
   );
