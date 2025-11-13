@@ -6,12 +6,50 @@
  * Overview of the Inspector Dom platform with quick stats and actions
  */
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Database, FileText, Layout, Wand2, Activity, ArrowRight, Plus } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState({
+    providers: 0,
+    sources: 0,
+    templates: 0,
+    entities: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const supabase = createClient();
+
+      const [providersRes, sourcesRes, templatesRes, entitiesRes] = await Promise.all([
+        supabase.from('providers').select('*', { count: 'exact', head: true }),
+        supabase.from('sources').select('*', { count: 'exact', head: true }),
+        supabase.from('templates').select('*', { count: 'exact', head: true }),
+        supabase.from('entities').select('*', { count: 'exact', head: true })
+      ]);
+
+      setStats({
+        providers: providersRes.count || 0,
+        sources: sourcesRes.count || 0,
+        templates: templatesRes.count || 0,
+        entities: entitiesRes.count || 0
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
@@ -32,7 +70,7 @@ export default function DashboardPage() {
             <Database className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{loading ? '...' : stats.providers}</div>
             <p className="text-xs text-gray-500 mt-1">Data sources configured</p>
           </CardContent>
         </Card>
@@ -40,13 +78,13 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
-              Source Files
+              Sources
             </CardTitle>
             <FileText className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-gray-500 mt-1">Files uploaded</p>
+            <div className="text-2xl font-bold">{loading ? '...' : stats.sources}</div>
+            <p className="text-xs text-gray-500 mt-1">S3 buckets & uploads</p>
           </CardContent>
         </Card>
 
@@ -58,7 +96,7 @@ export default function DashboardPage() {
             <Layout className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{loading ? '...' : stats.templates}</div>
             <p className="text-xs text-gray-500 mt-1">Extraction templates</p>
           </CardContent>
         </Card>
@@ -66,13 +104,13 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
-              Extractions
+              Entities
             </CardTitle>
             <Wand2 className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-gray-500 mt-1">AI extractions run</p>
+            <div className="text-2xl font-bold">{loading ? '...' : stats.entities}</div>
+            <p className="text-xs text-gray-500 mt-1">Data tables created</p>
           </CardContent>
         </Card>
       </div>

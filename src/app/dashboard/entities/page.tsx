@@ -118,24 +118,29 @@ export default function EntitiesPage() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+    if (!confirm(`Are you sure you want to delete "${name}"? This will also drop the physical table. This action cannot be undone.`)) {
       return;
     }
 
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from('entities')
-        .delete()
-        .eq('id', id);
+      const response = await fetch(`/api/entities/${id}`, {
+        method: 'DELETE'
+      });
 
-      if (error) throw error;
+      const result = await response.json();
 
-      toast.success('Entity deleted successfully');
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete entity');
+      }
+
+      toast.success(result.table_dropped
+        ? 'Entity and table deleted successfully'
+        : 'Entity deleted successfully'
+      );
       fetchEntities();
     } catch (error) {
       console.error('Error deleting entity:', error);
-      toast.error('Failed to delete entity');
+      toast.error(error instanceof Error ? error.message : 'Failed to delete entity');
     }
   };
 

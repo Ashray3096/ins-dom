@@ -1,0 +1,8 @@
+dagster
+dagster-webserver
+supabase
+boto3
+requests
+beautifulsoup4
+lxml
+jsonpath-ng

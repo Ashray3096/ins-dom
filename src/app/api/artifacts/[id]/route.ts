@@ -2,6 +2,52 @@ import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 /**
+ * GET /api/artifacts/[id]
+ * Fetch a single artifact with all its related data
+ */
+export async function GET(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+    const supabase = await createClient();
+
+    // Fetch artifact with related source and provider data
+    const { data: artifact, error } = await supabase
+      .from('artifacts')
+      .select(`
+        *,
+        source:sources!artifacts_source_id_fkey (
+          *,
+          provider:providers!sources_provider_id_fkey (*)
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error || !artifact) {
+      console.error('Error fetching artifact:', error);
+      return NextResponse.json(
+        { error: 'Artifact not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: artifact
+    });
+  } catch (error) {
+    console.error('Error in GET /api/artifacts/[id]:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * DELETE /api/artifacts/[id]
  * Delete an artifact and its associated file from storage
  */

@@ -5,8 +5,8 @@
  */
 
 export type TemplateStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
-export type ExtractionMethod = 'ai' | 'visual' | 'hybrid';
-export type ArtifactType = 'pdf' | 'html' | 'email' | 'json';
+export type ExtractionMethod = 'pdf' | 'html' | 'email' | 'json' | 'csv';
+export type ArtifactType = 'pdf' | 'html' | 'email' | 'json' | 'csv';
 
 export interface TemplateField {
   name: string;

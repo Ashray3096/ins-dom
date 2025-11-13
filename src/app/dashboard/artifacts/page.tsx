@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +31,7 @@ import type { FieldMapping } from '@/components/template-builder/visual-dom-sele
 import type { PDFFieldMapping } from '@/components/template-builder/textract-rule-builder';
 
 export default function ArtifactsPage() {
+  const router = useRouter();
   const [artifacts, setArtifacts] = useState<Artifact[]>([]);
   const [sources, setSources] = useState<Source[]>([]);
   const [selectedSource, setSelectedSource] = useState<string>('');
@@ -172,6 +174,25 @@ export default function ArtifactsPage() {
     }
   };
 
+  // Route to appropriate extraction page based on artifact type
+  const handleExtractFields = (artifact: Artifact) => {
+    const fileType = artifact.artifact_type;
+
+    if (fileType === 'html') {
+      router.push(`/dashboard/artifacts/${artifact.id}/extract/dom`);
+    } else if (fileType === 'pdf') {
+      router.push(`/dashboard/artifacts/${artifact.id}/extract/pdf`);
+    } else if (fileType === 'json') {
+      router.push(`/dashboard/artifacts/${artifact.id}/extract/json`);
+    } else if (fileType === 'csv') {
+      router.push(`/dashboard/artifacts/${artifact.id}/extract/csv`);
+    } else if (fileType === 'email') {
+      router.push(`/dashboard/artifacts/${artifact.id}/extract/email`);
+    } else {
+      toast.error(`Extraction not supported for ${fileType} files yet`);
+    }
+  };
+
   const saveTemplateFromVisualBuilder = async (name: string, description: string) => {
     if (!pendingTemplateArtifact || (pendingFieldMappings.length === 0 && pendingPDFFieldMappings.length === 0)) {
       toast.error('No field mappings to save');
@@ -257,8 +278,8 @@ export default function ArtifactsPage() {
       // Create prompt describing the extraction
       const prompt = description || `Extract the following fields: ${fields.join(', ')}`;
 
-      // Determine extraction method
-      const extractionMethod = selectors.extractionEngine === 'textract' ? 'textract' : 'visual';
+      // Extraction method matches artifact type (simplified design)
+      const extractionMethod = pendingTemplateArtifact.artifact_type;
 
       // Create template via API
       const response = await fetch('/api/templates', {
@@ -511,32 +532,20 @@ export default function ArtifactsPage() {
                           <Eye className="w-4 h-4 mr-2" />
                           View Content
                         </Button>
-                        {artifact.artifact_type === 'html' && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setVisualBuilderArtifact(artifact)}
-                            className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                          >
-                            <MousePointer2 className="w-4 h-4 mr-2" />
-                            Build Visual Template
-                          </Button>
-                        )}
-                        {artifact.artifact_type === 'pdf' &&
-                         !artifact.raw_content?.html &&
-                         !artifact.filename?.endsWith('.html') && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setTextractBuilderArtifact(artifact)}
-                            className="border-purple-300 text-purple-700 hover:bg-purple-50"
-                          >
-                            <Sparkles className="w-4 h-4 mr-2" />
-                            Build Smart Template
-                          </Button>
-                        )}
-                        {/* NABCA Template Generation - Only for S3 PDFs */}
-                        {artifact.metadata?.s3_key && artifact.artifact_type === 'pdf' && (
+
+                        {/* NEW: Single Extract Fields button with smart routing */}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleExtractFields(artifact)}
+                          className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                        >
+                          <MousePointer2 className="w-4 h-4 mr-2" />
+                          Extract Fields
+                        </Button>
+
+                        {/* NABCA Template - Only for NABCA source PDFs */}
+                        {artifact.source?.provider?.name === 'NABCA' && artifact.artifact_type === 'pdf' && (
                           <Button
                             variant="outline"
                             size="sm"
@@ -547,6 +556,8 @@ export default function ArtifactsPage() {
                             Generate NABCA Template
                           </Button>
                         )}
+
+                        {/* AI Extraction */}
                         <Button
                           size="sm"
                           onClick={() => setAiExtractingArtifact(artifact)}
@@ -554,15 +565,6 @@ export default function ArtifactsPage() {
                         >
                           <Sparkles className="w-4 h-4 mr-2" />
                           Extract Data
-                        </Button>
-                        {/* NEW: Universal Template Wizard - 5th Button */}
-                        <Button
-                          size="sm"
-                          onClick={() => setUniversalWizardArtifact(artifact)}
-                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
-                        >
-                          <Wand2 className="w-4 h-4 mr-2" />
-                          Create Template (NEW)
                         </Button>
                       </>
                     )}

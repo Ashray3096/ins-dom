@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Save, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Save, Eye, EyeOff, Database, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
 import { FieldPalette } from './field-palette';
@@ -37,14 +37,8 @@ export interface EntityField {
   foreign_key_field_id?: string;
   default_value?: string;
   validation_rules?: Record<string, any>;
-  transform_expression?: string;
   sort_order: number;
-
-  // Mapping info (if imported from template)
-  template_id?: string;
-  template_field_path?: string;
-  mapping_type?: 'DIRECT' | 'TRANSFORMED' | 'CALCULATED';
-  metadata?: Record<string, any>; // Stores nabca_section and other field-specific metadata
+  metadata?: Record<string, any>; // Stores field-specific metadata
 }
 
 interface Entity {
@@ -55,6 +49,10 @@ interface Entity {
   entity_type: EntityType;
   status: string;
   template_id: string | null;
+  table_status?: string;
+  table_created_at?: string | null;
+  graphql_operations?: Record<string, any> | null;
+  metadata?: Record<string, any> | null;
 }
 
 interface VisualDesignerProps {
@@ -68,6 +66,7 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showSqlPreview, setShowSqlPreview] = useState(false);
+  const [creatingTable, setCreatingTable] = useState(false);
 
   useEffect(() => {
     loadEntity();
@@ -199,12 +198,7 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
         foreign_key_field_id: f.foreign_key_field_id || null,
         default_value: f.default_value || null,
         validation_rules: f.validation_rules || null,
-        transform_expression: f.transform_expression || null,
         sort_order: f.sort_order,
-        // Template mapping fields (for NABCA and other template-based entities)
-        template_id: f.template_id || null,
-        template_field_path: f.template_field_path || null,
-        mapping_type: f.mapping_type || null,
         metadata: f.metadata || null,
       }));
 
@@ -219,23 +213,6 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
         throw insertError;
       }
 
-      // If fields have template mappings, save those too
-      const fieldMappings = fields
-        .filter(f => f.template_id && f.template_field_path)
-        .map(f => ({
-          entity_field_id: f.id,
-          template_id: f.template_id!,
-          template_field_path: f.template_field_path!,
-          mapping_type: f.mapping_type || 'DIRECT',
-          transform_expression: f.transform_expression || null,
-          created_by: user.id,
-        }));
-
-      if (fieldMappings.length > 0) {
-        // Note: We'll need to update field IDs after insert
-        // For now, skip mappings - we'll handle this in a follow-up
-      }
-
       toast.success('Entity fields saved successfully!');
       loadFields(); // Reload to get proper IDs
     } catch (error) {
@@ -243,6 +220,43 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
       toast.error(error instanceof Error ? error.message : 'Failed to save fields');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleCreateTable = async () => {
+    if (!entity) return;
+
+    // Confirmation dialog
+    const confirmed = confirm(
+      `Create table '${entity.name}' in the database?\n\n` +
+      `This will create a physical table with ${fields.length} columns. ` +
+      `Make sure you've saved your field definitions first.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setCreatingTable(true);
+
+      const response = await fetch(`/api/entities/${entityId}/create-table`, {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.details || 'Failed to create table');
+      }
+
+      toast.success(`Table '${entity.name}' created successfully!`);
+
+      // Reload entity to get updated table_status
+      loadEntity();
+    } catch (error) {
+      console.error('Error creating table:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to create table');
+    } finally {
+      setCreatingTable(false);
     }
   };
 
@@ -264,7 +278,21 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">{entity.display_name}</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900">{entity.display_name}</h2>
+            {entity.table_status === 'created' && (
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                <CheckCircle className="w-3 h-3 mr-1" />
+                Table Created
+              </Badge>
+            )}
+            {entity.table_status === 'failed' && (
+              <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                Creation Failed
+              </Badge>
+            )}
+          </div>
           <p className="text-sm text-gray-600 mt-1">
             Design the structure of your entity by adding fields
           </p>
@@ -296,6 +324,28 @@ export function VisualDesigner({ entityId }: VisualDesignerProps) {
               <>
                 <Save className="mr-2 h-4 w-4" />
                 Save Fields
+              </>
+            )}
+          </Button>
+          <Button
+            onClick={handleCreateTable}
+            disabled={creatingTable || fields.length === 0 || entity.table_status === 'created'}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            {creatingTable ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : entity.table_status === 'created' ? (
+              <>
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Table Created
+              </>
+            ) : (
+              <>
+                <Database className="mr-2 h-4 w-4" />
+                Create Table
               </>
             )}
           </Button>

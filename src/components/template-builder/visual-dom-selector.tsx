@@ -258,29 +258,40 @@ export function VisualDOMSelector({
       return `//*[@id="${element.id}"]`;
     }
 
-    // Build path from body
-    const paths: string[] = [];
-    let current: HTMLElement | null = element;
+    // For table cells, use relative XPath with table position
+    const table = element.closest('table');
+    if (table) {
+      // Find which table this is (counting all tables in document)
+      const allTables = Array.from(doc.querySelectorAll('table'));
+      const tableIndex = allTables.indexOf(table) + 1;
 
-    while (current && current !== doc.body) {
-      let index = 1;
-      let sibling = current.previousElementSibling;
+      // Find row within table
+      const tr = element.closest('tr');
+      const allRows = table.querySelectorAll('tr');
+      const rowIndex = tr ? Array.from(allRows).indexOf(tr) + 1 : 1;
 
-      while (sibling) {
-        if (sibling.tagName === current.tagName) {
-          index++;
+      // Find cell within row
+      const td = element.closest('td, th');
+      const cellIndex = td && tr ? Array.from(tr.children).indexOf(td) + 1 : 1;
+
+      // Build relative XPath: //table[N]//tr[M]//td[K]//div[@class='data']
+      // Use bracket notation [N] which lxml supports (not position()=N)
+      let xpath = `//table[${tableIndex}]//tr[${rowIndex}]//td[${cellIndex}]`;
+
+      // Add final element
+      if (element.tagName.toLowerCase() !== 'td') {
+        if (element.className && element.className.includes('data')) {
+          xpath += `//div[contains(@class, 'data')]`;
+        } else {
+          xpath += `//${element.tagName.toLowerCase()}`;
         }
-        sibling = sibling.previousElementSibling;
       }
 
-      const tagName = current.tagName.toLowerCase();
-      const pathIndex = index > 1 ? `[${index}]` : '';
-      paths.unshift(`${tagName}${pathIndex}`);
-
-      current = current.parentElement;
+      return xpath;
     }
 
-    return '/' + paths.join('/');
+    // Fallback: relative path without table
+    return `//${element.tagName.toLowerCase()}`;
   };
 
   const generateCSSSelector = (element: HTMLElement): string => {
@@ -289,22 +300,96 @@ export function VisualDOMSelector({
       return `#${element.id}`;
     }
 
-    // Use classes if available
-    if (element.className && typeof element.className === 'string') {
-      const classes = element.className.trim().split(/\s+/).filter(c => c && !c.startsWith('dom-selector'));
-      if (classes.length > 0) {
-        return `${element.tagName.toLowerCase()}.${classes.join('.')}`;
+    // Check if element is in a table - use structural path
+    const table = element.closest('table');
+    if (table) {
+      // Get the iframe document
+      const iframeDoc = element.ownerDocument;
+      return generateTableCellSelector(element, table, iframeDoc);
+    }
+
+    // Otherwise, build contextual path
+    return generateContextualPath(element);
+  };
+
+  const generateTableCellSelector = (element: HTMLElement, table: HTMLElement, doc: Document): string => {
+    const parts: string[] = [];
+
+    // Add table identifier
+    const tableClasses = table.className.trim().split(/\s+/).filter(c => c && c.length > 2);
+    if (tableClasses.length > 0) {
+      parts.push(`table.${tableClasses[0]}`);
+    } else {
+      // Find which table number this is (use iframe document, not outer document)
+      const allTables = Array.from(doc.querySelectorAll('table'));
+      const tableIndex = allTables.indexOf(table) + 1;
+      parts.push(`table:nth-of-type(${tableIndex})`);
+    }
+
+    // Find row position
+    const tr = element.closest('tr');
+    if (tr) {
+      // Find all rows in table (whether in tbody or not)
+      const allRows = Array.from(table.querySelectorAll('tr'));
+      const rowIndex = allRows.indexOf(tr) + 1;
+
+      // Don't include tbody in selector - it may not exist in raw HTML
+      // (browsers auto-insert it, but stored HTML might not have it)
+      parts.push(`tr:nth-of-type(${rowIndex})`);
+    }
+
+    // Find cell position
+    const td = element.closest('td, th');
+    if (td) {
+      const cells = Array.from(td.parentElement!.children);
+      const cellIndex = cells.indexOf(td) + 1;
+      parts.push(`td:nth-of-type(${cellIndex})`);
+    }
+
+    // Add final element if not the cell itself
+    if (element.tagName.toLowerCase() !== 'td' && element.tagName.toLowerCase() !== 'th') {
+      const classes = element.className?.trim().split(/\s+/).filter(c => c && !c.startsWith('dom-selector'));
+      if (classes && classes.length > 0) {
+        parts.push(`${element.tagName.toLowerCase()}.${classes.join('.')}`);
+      } else {
+        parts.push(element.tagName.toLowerCase());
       }
     }
 
-    // Fall back to tag name with nth-child
-    const parent = element.parentElement;
-    if (!parent) return element.tagName.toLowerCase();
+    return parts.join(' ');
+  };
 
-    const siblings = Array.from(parent.children).filter(el => el.tagName === element.tagName);
-    const index = siblings.indexOf(element) + 1;
+  const generateContextualPath = (element: HTMLElement): string => {
+    // Build path with limited depth (max 4 levels)
+    const parts: string[] = [];
+    let current: HTMLElement | null = element;
+    let depth = 0;
+    const maxDepth = 4;
 
-    return `${element.tagName.toLowerCase()}:nth-child(${index})`;
+    while (current && depth < maxDepth) {
+      let part = current.tagName.toLowerCase();
+
+      const classes = current.className?.trim().split(/\s+/).filter(c => c && !c.startsWith('dom-selector'));
+      if (classes && classes.length > 0) {
+        part += `.${classes[0]}`;
+      } else if (depth > 0) {
+        // Add nth-of-type for elements without classes (except the target element)
+        const parent = current.parentElement;
+        if (parent) {
+          const siblings = Array.from(parent.children).filter(el => el.tagName === current!.tagName);
+          if (siblings.length > 1) {
+            const index = siblings.indexOf(current) + 1;
+            part += `:nth-of-type(${index})`;
+          }
+        }
+      }
+
+      parts.unshift(part);
+      current = current.parentElement;
+      depth++;
+    }
+
+    return parts.join(' ');
   };
 
   // Pattern Detection Functions

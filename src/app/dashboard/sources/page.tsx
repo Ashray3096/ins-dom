@@ -38,6 +38,7 @@ export default function SourcesPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [s3BrowserOpen, setS3BrowserOpen] = useState(false);
   const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProviders();
@@ -96,6 +97,35 @@ export default function SourcesPage() {
       setS3BrowserOpen(true);
     } else {
       toast.info('Sync functionality for non-S3 sources coming soon!');
+    }
+  };
+
+  const handleDelete = async (sourceId: string, sourceName: string) => {
+    if (!confirm(`Are you sure you want to delete "${sourceName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      setDeleting(sourceId);
+      const response = await fetch(`/api/sources/${sourceId}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete source');
+      }
+
+      toast.success('Source deleted successfully!');
+
+      // Remove the source from the list
+      setSources(prev => prev.filter(s => s.id !== sourceId));
+    } catch (error) {
+      console.error('Error deleting source:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to delete source');
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -310,9 +340,14 @@ export default function SourcesPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => toast.info('Delete functionality coming next!')}
+                      onClick={() => handleDelete(source.id, source.name)}
+                      disabled={deleting === source.id}
                     >
-                      <Trash2 className="w-4 h-4 text-red-600" />
+                      {deleting === source.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4 text-red-600" />
+                      )}
                     </Button>
                   </div>
                 </div>

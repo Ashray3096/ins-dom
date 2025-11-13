@@ -25,6 +25,7 @@ import 'reactflow/dist/style.css';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Plus,
   RefreshCw,
@@ -39,6 +40,16 @@ import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import { EntityNode } from '@/components/er-diagram/entity-node';
 import { RelationshipDialog } from '@/components/er-diagram/relationship-dialog';
+import { calculateStarSchemaLayout } from '@/lib/star-schema-layout';
+import { AIChatPanel } from '@/components/star-schema/ai-chat-panel';
+import {
+  parseSourceMapping,
+  getUniqueSourceEntities,
+  mapAITypeToDBType,
+  determineRelationshipType,
+  type AIFieldSuggestion
+} from '@/lib/source-mapping-parser';
+import { getSourceDependencies } from '@/lib/transform-sql-generator';
 
 interface Entity {
   id: string;
@@ -79,6 +90,7 @@ export default function ERDiagramPage() {
   const [saving, setSaving] = useState(false);
   const [relationshipDialogOpen, setRelationshipDialogOpen] = useState(false);
   const [selectedConnection, setSelectedConnection] = useState<Connection | null>(null);
+  const [viewMode, setViewMode] = useState<'diagram' | 'ai-analysis'>('diagram');
 
   useEffect(() => {
     loadDiagram();
@@ -230,16 +242,183 @@ export default function ERDiagramPage() {
   };
 
   const handleAutoLayout = () => {
-    // Simple auto-layout algorithm
-    const layoutNodes = nodes.map((node, index) => ({
-      ...node,
-      position: {
-        x: 100 + (index % 3) * 350,
-        y: 100 + Math.floor(index / 3) * 300,
-      },
-    }));
+    // Apply star schema layout (hierarchical)
+    const layout = calculateStarSchemaLayout(entities);
+
+    // Update node positions
+    const layoutNodes = nodes.map(node => {
+      const pos = layout.nodes.find(n => n.id === node.id);
+      return pos ? { ...node, position: pos.position } : node;
+    });
+
     setNodes(layoutNodes);
-    toast.success('Layout updated');
+    toast.success('Star schema layout applied');
+  };
+
+  /**
+   * Helper function to look up entity ID by name
+   */
+  const lookupEntityIdByName = (entityName: string): string | null => {
+    const entity = entities.find(e => e.name === entityName);
+    return entity ? entity.id : null;
+  };
+
+  /**
+   * Create entity from AI suggestion
+   */
+  const handleCreateEntity = async (suggestion: any) => {
+    try {
+      setSaving(true);
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
+      // 1. Create entity
+      const entityType = suggestion.type === 'dimension' ? 'REFERENCE' : 'MASTER';
+      const displayName = suggestion.name.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
+
+      const sourceEntities = getUniqueSourceEntities(suggestion.fields || []);
+      const sourceDependencies = sourceEntities.filter(e => e !== suggestion.name);
+
+      const { data: entityData, error: entityError } = await supabase
+        .from('entities')
+        .insert({
+          name: suggestion.name,
+          display_name: displayName,
+          description: suggestion.description || null,
+          entity_type: entityType,
+          status: 'ACTIVE',
+          created_by: user.id,
+          metadata: {
+            ai_generated: true,
+            reasoning: suggestion.reasoning,
+            source_dependencies: sourceDependencies
+          }
+        })
+        .select()
+        .single();
+
+      if (entityError) throw entityError;
+
+      toast.success(`Created entity: ${suggestion.name}`);
+
+      // 2. Create fields
+      const fieldsToInsert: any[] = [];
+
+      // Add primary key field
+      fieldsToInsert.push({
+        entity_id: entityData.id,
+        name: `${suggestion.name}_id`,
+        display_name: 'ID',
+        description: 'Primary key',
+        data_type: 'UUID',
+        is_required: true,
+        is_unique: true,
+        is_primary_key: true,
+        sort_order: 0
+      });
+
+      // Add suggested fields (only those with source mappings)
+      for (let i = 0; i < (suggestion.fields || []).length; i++) {
+        const field = suggestion.fields[i];
+
+        // Skip fields without source mappings
+        if (!field.source) {
+          console.warn(`Skipping field ${field.name} - no source mapping`);
+          continue;
+        }
+
+        const parsed = parseSourceMapping(field.source);
+
+        // Check if this is a foreign key
+        let fkEntityId = null;
+        let fkFieldId = null;
+        if (parsed && parsed.isFK) {
+          fkEntityId = lookupEntityIdByName(parsed.sourceEntity);
+        }
+
+        fieldsToInsert.push({
+          entity_id: entityData.id,
+          name: field.name,
+          display_name: field.name.replace(/_/g, ' '),
+          description: field.source ? `Source: ${field.source}` : null,
+          data_type: mapAITypeToDBType(field.type),
+          is_required: field.name.toLowerCase().includes('_id'),
+          is_unique: false,
+          is_primary_key: false,
+          foreign_key_entity_id: fkEntityId,
+          sort_order: i + 1,
+          metadata: {
+            source: field.source,
+            parsed: parsed,
+            join_on: field.join_on
+          }
+        });
+      }
+
+      const { error: fieldsError } = await supabase
+        .from('entity_fields')
+        .insert(fieldsToInsert);
+
+      if (fieldsError) throw fieldsError;
+
+      toast.success(`Created ${fieldsToInsert.length} fields`);
+
+      // 3. Create relationships
+      for (const sourceEntity of sourceDependencies) {
+        const toEntityId = lookupEntityIdByName(sourceEntity);
+        if (toEntityId) {
+          const relType = determineRelationshipType(entityType, 'INTERIM');
+
+          console.log(`Creating relationship: ${suggestion.name} -> ${sourceEntity} (${relType})`);
+
+          const { data: relData, error: relError } = await supabase
+            .from('entity_relationships')
+            .insert({
+              from_entity_id: entityData.id,
+              to_entity_id: toEntityId,
+              relationship_type: relType,
+              description: `Auto-generated: ${suggestion.name} sources data from ${sourceEntity}`,
+              created_by: user.id
+            })
+            .select();
+
+          if (relError) {
+            console.error('Error creating relationship:', relError);
+            // Don't fail the whole operation for relationship errors
+          } else {
+            console.log('Relationship created:', relData);
+          }
+        } else {
+          console.warn(`Could not find entity: ${sourceEntity}`);
+        }
+      }
+
+      if (sourceDependencies.length > 0) {
+        toast.success(`Created ${sourceDependencies.length} relationships`);
+      }
+
+      // 4. Create table
+      const createTableResponse = await fetch(`/api/entities/${entityData.id}/create-table`, {
+        method: 'POST'
+      });
+
+      if (!createTableResponse.ok) {
+        throw new Error('Failed to create table');
+      }
+
+      toast.success(`Created table: ${suggestion.name}`);
+
+      // 5. Refresh diagram
+      await loadDiagram();
+
+      toast.success(`✅ Entity ${suggestion.name} created successfully!`);
+    } catch (error) {
+      console.error('Error creating entity from AI:', error);
+      toast.error(`Failed to create entity: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSaveLayout = async () => {
@@ -294,7 +473,7 @@ export default function ERDiagramPage() {
       <div className="flex-none p-6 border-b bg-white">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">ER Diagram</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Schema Designer</h1>
             <p className="mt-2 text-gray-600">
               {entities.length} entities, {edges.length} relationships
             </p>
@@ -304,20 +483,34 @@ export default function ERDiagramPage() {
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh
             </Button>
-            <Button variant="outline" size="sm" onClick={handleAutoLayout}>
-              <Maximize2 className="mr-2 h-4 w-4" />
-              Auto Layout
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleSaveLayout}>
-              <Save className="mr-2 h-4 w-4" />
-              Save Layout
-            </Button>
+            {viewMode === 'diagram' && (
+              <>
+                <Button variant="outline" size="sm" onClick={handleAutoLayout}>
+                  <Maximize2 className="mr-2 h-4 w-4" />
+                  Auto Layout
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleSaveLayout}>
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Layout
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* ER Diagram Canvas */}
-      <div className="flex-1 relative">
+      {/* Tabs */}
+      <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)} className="flex-1 flex flex-col">
+        <div className="flex-none px-6 pt-4 border-b bg-gray-50">
+          <TabsList>
+            <TabsTrigger value="diagram">Schema Diagram</TabsTrigger>
+            <TabsTrigger value="ai-analysis">✨ Generate Schema with AI</TabsTrigger>
+          </TabsList>
+        </div>
+
+        {/* Diagram View */}
+        <TabsContent value="diagram" className="flex-1 mt-0">
+          <div className="h-full relative">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -343,6 +536,7 @@ export default function ERDiagramPage() {
             maskColor="rgb(240, 240, 240, 0.6)"
           />
 
+
           {/* Legend */}
           <Panel position="top-right" className="bg-white p-3 rounded-lg shadow-lg border">
             <div className="space-y-2">
@@ -362,7 +556,20 @@ export default function ERDiagramPage() {
             </div>
           </Panel>
         </ReactFlow>
-      </div>
+          </div>
+        </TabsContent>
+
+        {/* AI Analysis View */}
+        <TabsContent value="ai-analysis" className="flex-1 mt-0 h-full">
+          <AIChatPanel
+            entities={entities}
+            onCreateEntity={handleCreateEntity}
+            onCreateRelationship={(suggestion) => {
+              toast.success('Relationship creation from AI - coming soon!');
+            }}
+          />
+        </TabsContent>
+      </Tabs>
 
       {/* Relationship Dialog */}
       <RelationshipDialog

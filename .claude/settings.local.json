@@ -22,9 +22,15 @@
       "Bash(curl:*)",
       "Bash(\"https://$JIRA_HOST/rest/api/3/project/CDP\")",
       "Bash(chmod:*)",
-      "Bash(./test-nabca-setup.sh:*)"
+      "Bash(./test-nabca-setup.sh:*)",
+      "Bash(pkill:*)",
+      "Bash(rm:*)",
+      "Bash(PORT=3000 npm run dev:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

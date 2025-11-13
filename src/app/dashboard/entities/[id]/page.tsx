@@ -3,13 +3,19 @@
 /**
  * Entity Detail Page
  *
- * View and edit entity schema using the visual designer
+ * Tabbed interface for entity management:
+ * - Schema: Design entity fields
+ * - Pipeline: Run extraction pipeline
+ * - Data: View extracted data
  */
 
-import { use } from 'react';
+import { use, useState } from 'react';
 import { VisualDesigner } from '@/components/entities/visual-designer';
+import { EntityPipelineTab } from '@/components/entities/entity-pipeline-tab';
+import { EntityDataTab } from '@/components/entities/entity-data-tab';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowLeft, Database, Play, Table } from 'lucide-react';
 import Link from 'next/link';
 
 export default function EntityDetailPage({
@@ -18,6 +24,7 @@ export default function EntityDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const [activeTab, setActiveTab] = useState('schema');
 
   return (
     <div className="space-y-6">
@@ -31,8 +38,35 @@ export default function EntityDetailPage({
         </Link>
       </div>
 
-      {/* Visual Designer */}
-      <VisualDesigner entityId={id} />
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-3 lg:w-[600px]">
+          <TabsTrigger value="schema" className="flex items-center gap-2">
+            <Database className="w-4 h-4" />
+            Schema
+          </TabsTrigger>
+          <TabsTrigger value="pipeline" className="flex items-center gap-2">
+            <Play className="w-4 h-4" />
+            Pipeline
+          </TabsTrigger>
+          <TabsTrigger value="data" className="flex items-center gap-2">
+            <Table className="w-4 h-4" />
+            Data
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="schema" className="mt-6">
+          <VisualDesigner entityId={id} />
+        </TabsContent>
+
+        <TabsContent value="pipeline" className="mt-6">
+          <EntityPipelineTab entityId={id} />
+        </TabsContent>
+
+        <TabsContent value="data" className="mt-6">
+          <EntityDataTab entityId={id} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

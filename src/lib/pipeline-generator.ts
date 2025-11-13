@@ -409,7 +409,8 @@ export function generateEntityTableSQL(
 
   const columns = fields.map(f => {
     const nullable = f.is_required ? 'NOT NULL' : '';
-    return `  ${f.name} ${sqlType(f.data_type)} ${nullable}`;
+    // Quote column names to handle reserved words (to, date, from, etc.)
+    return `  "${f.name}" ${sqlType(f.data_type)} ${nullable}`;
   });
 
   // Add metadata columns

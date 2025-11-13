@@ -77,6 +77,11 @@ export async function listS3Objects(
       etag: obj.ETag || '',
     }));
 
+    console.log(`[S3] Raw S3 response: ${objects.length} objects before filtering`);
+    if (objects.length > 0) {
+      console.log(`[S3] First 5 keys:`, objects.slice(0, 5).map(o => o.key));
+    }
+
     // Filter by pattern if provided (e.g., "*.pdf", "*.html")
     if (pattern) {
       const regexPattern = pattern
@@ -85,10 +90,20 @@ export async function listS3Objects(
         .replace(/\?/g, '.');
       const regex = new RegExp(`^${regexPattern}$`, 'i');
 
+      console.log(`[S3] Pattern: '${pattern}' -> Regex: ${regex}`);
+
+      const beforeFilter = objects.length;
       objects = objects.filter(obj => {
         const filename = obj.key.split('/').pop() || '';
-        return regex.test(filename);
+        const matches = regex.test(filename);
+        if (!matches && beforeFilter <= 10) {
+          console.log(`[S3] ❌ Filtered out: ${obj.key} (filename: ${filename})`);
+        } else if (matches) {
+          console.log(`[S3] ✓ Matched: ${obj.key} (filename: ${filename})`);
+        }
+        return matches;
       });
+      console.log(`[S3] After pattern filter: ${objects.length}/${beforeFilter} objects remaining`);
     }
 
     return {

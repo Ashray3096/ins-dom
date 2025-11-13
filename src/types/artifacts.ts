@@ -4,7 +4,7 @@
  * Based on spec section 3: Database Schema - Artifacts Table
  */
 
-export type ArtifactType = 'pdf' | 'html' | 'email' | 'json';
+export type ArtifactType = 'pdf' | 'html' | 'email' | 'json' | 'csv';
 export type ExtractionStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
 export interface Artifact {

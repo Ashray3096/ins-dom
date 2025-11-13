@@ -141,9 +141,18 @@ export function TemplateFieldImporter({
       else if (data?.fields && Array.isArray(data.fields) && data.fields.length > 0) {
         console.log('Using top-level fields array:', data.fields.length, 'fields');
 
-        // These are already properly structured semantic fields
+        // Handle both string arrays and object arrays
         data.fields.forEach((field: any) => {
-          if (typeof field === 'object' && field.name) {
+          // Handle string array: ["field1", "field2", ...]
+          if (typeof field === 'string') {
+            fields.push({
+              name: field,
+              type: 'TEXT', // Default type for string-only fields
+              description: '',
+            });
+          }
+          // Handle object array: [{ name, type, description }, ...]
+          else if (typeof field === 'object' && field.name) {
             fields.push({
               name: field.name,
               type: field.type || field.data_type || 'TEXT',

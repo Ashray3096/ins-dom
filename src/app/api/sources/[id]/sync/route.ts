@@ -14,7 +14,8 @@ import type { S3SourceConfig } from '@/types/sources';
 import * as cheerio from 'cheerio';
 
 // Helper to determine artifact type from key/content
-function determineArtifactType(key: string): string {
+function determineArtifactType(key: string, content?: Buffer): string {
+  // Try extension first
   const ext = key.split('.').pop()?.toLowerCase();
   const typeMap: Record<string, string> = {
     'pdf': 'pdf',
@@ -23,8 +24,50 @@ function determineArtifactType(key: string): string {
     'eml': 'email',
     'msg': 'email',
     'json': 'json',
+    'csv': 'csv',
   };
-  return typeMap[ext || ''] || 'html'; // Default to html
+
+  if (ext && typeMap[ext]) {
+    return typeMap[ext];
+  }
+
+  // Content-based detection for files without extension
+  if (content) {
+    const preview = content.toString('utf-8', 0, 1000);
+
+    // Check for email headers (RFC822 format)
+    if (preview.includes('Return-Path:') ||
+        (preview.includes('From:') && preview.includes('Subject:') && preview.includes('Date:')) ||
+        preview.includes('MIME-Version:') ||
+        preview.includes('Message-ID:')) {
+      return 'email';
+    }
+
+    // Check for JSON
+    const trimmed = preview.trim();
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+      try {
+        JSON.parse(trimmed.substring(0, 100));
+        return 'json';
+      } catch {
+        // Not valid JSON
+      }
+    }
+
+    // Check for PDF magic bytes
+    if (preview.startsWith('%PDF')) {
+      return 'pdf';
+    }
+
+    // Check for CSV (comma-separated with multiple lines)
+    const lines = preview.split('\n');
+    if (lines.length > 1 && lines[0].includes(',')) {
+      return 'csv';
+    }
+  }
+
+  // Default fallback
+  return 'html';
 }
 
 // Helper to extract text content from HTML
@@ -98,7 +141,14 @@ export async function POST(
       s3Prefix = s3Prefix.substring(1);
     }
 
-    console.log(`Syncing S3 source ${id}: bucket=${config.bucket}, prefix=${s3Prefix}, maxFiles=${maxFiles}`);
+    console.log(`\n========== S3 SYNC START ==========`);
+    console.log(`Source ID: ${id}`);
+    console.log(`Bucket: '${config.bucket}' (length: ${config.bucket.length})`);
+    console.log(`Prefix: '${s3Prefix}' (length: ${s3Prefix.length})`);
+    console.log(`Pattern: '${config.pattern}'`);
+    console.log(`Region: ${config.region || 'us-east-1'}`);
+    console.log(`Max Files: ${maxFiles}`);
+    console.log(`===================================\n`);
 
     // Create S3 client
     const s3Client = createS3Client({
@@ -110,15 +160,20 @@ export async function POST(
     });
 
     // List objects in S3
+    // Request more than maxFiles to account for folder markers that will be filtered out
     const objectsResult = await listS3Objects(s3Client, config.bucket, {
       prefix: s3Prefix,
       pattern: config.pattern,
-      maxKeys: maxFiles,
+      maxKeys: maxFiles + 10, // Request extra to account for folders
     });
 
+    // Filter out folder markers first
     const files = objectsResult.objects.filter(obj => !obj.key.endsWith('/')); // Exclude folders
 
-    console.log(`Found ${files.length} files in S3`);
+    console.log(`Found ${files.length} files in S3 (after filtering ${objectsResult.objects.length - files.length} folders)`);
+
+    // Now limit to maxFiles
+    const limitedFiles = files.slice(0, maxFiles);
 
     if (files.length === 0) {
       return NextResponse.json({
@@ -130,7 +185,7 @@ export async function POST(
     }
 
     // Check which files already exist in artifacts
-    const fileKeys = files.map(f => f.key);
+    const fileKeys = limitedFiles.map(f => f.key);
     const { data: existingArtifacts } = await supabase
       .from('artifacts')
       .select('original_filename, metadata')
@@ -142,14 +197,14 @@ export async function POST(
         .filter(Boolean)
     );
 
-    const newFiles = files.filter(f => !existingS3Keys.has(f.key));
+    const newFiles = limitedFiles.filter(f => !existingS3Keys.has(f.key));
 
     console.log(`${existingS3Keys.size} files already synced, ${newFiles.length} new files to process`);
 
     if (dryRun) {
       return NextResponse.json({
         dryRun: true,
-        totalFilesInS3: files.length,
+        totalFilesInS3: limitedFiles.length,
         newFilesToSync: newFiles.length,
         filesAlreadySynced: existingS3Keys.size,
         preview: newFiles.slice(0, 10).map(f => ({
@@ -169,22 +224,30 @@ export async function POST(
       try {
         console.log(`Processing S3 object: ${file.key}`);
 
-        const artifactType = determineArtifactType(file.key);
+        // Download content first for type detection
+        let content: Buffer | null = null;
+        let artifactType = determineArtifactType(file.key); // Try extension first
+
+        // For non-PDFs, download content
+        if (artifactType !== 'pdf') {
+          content = await getS3Object(s3Client, config.bucket, file.key);
+          // Re-detect type with content (for extensionless files)
+          artifactType = determineArtifactType(file.key, content);
+          console.log(`  Detected type: ${artifactType}`);
+        }
 
         // Prepare raw_content
         let rawContent: any = null;
         let filePath: string | null = null;
 
         // For PDFs: Skip download, store only metadata (S3 reference)
-        // For HTML/JSON: Download and store content (small files)
         if (artifactType === 'pdf') {
           console.log(`  Skipping PDF download, storing metadata only`);
-          rawContent = null; // No content stored for S3 PDFs
-          filePath = null;   // No Supabase storage path
-        } else {
-          // Download content for HTML/JSON files (small)
-          console.log(`  Downloading ${artifactType} content`);
-          const content = await getS3Object(s3Client, config.bucket, file.key);
+          rawContent = null;
+          filePath = null;
+        } else if (content) {
+          // Store content for non-PDF files
+          console.log(`  Storing ${artifactType} content`);
 
           if (artifactType === 'html') {
             const htmlContent = content.toString('utf-8');
@@ -192,14 +255,19 @@ export async function POST(
               html: htmlContent,
               text: extractTextFromHtml(htmlContent),
             };
+          } else if (artifactType === 'email') {
+            // Store email as-is for parsing later
+            rawContent = {
+              content: content.toString('utf-8'),
+            };
           } else {
-            // Store text content for other file types
+            // Store text content for other file types (JSON, CSV)
             rawContent = {
               content: content.toString('utf-8'),
             };
           }
 
-          filePath = file.key; // Store S3 key as file path for non-PDFs
+          filePath = file.key; // Store S3 key as file path
         }
 
         // Create artifact
