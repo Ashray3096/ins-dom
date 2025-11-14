@@ -5,11 +5,15 @@
  */
 
 // Validate required environment variables
-const requiredEnvVars = {
+const requiredEnvVars: Record<string, string | undefined> = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
 };
+
+// Only validate server-side variables when running on server
+if (typeof window === 'undefined') {
+  requiredEnvVars.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+}
 
 // Check for missing variables
 const missingVars = Object.entries(requiredEnvVars)

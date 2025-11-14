@@ -8,6 +8,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
@@ -93,12 +94,18 @@ export default function DashboardLayout({
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Wand2 className="w-5 h-5 text-white" />
-              </div>
+            <Link href="/dashboard" className="flex items-center gap-1">
+              <Image
+                src="/brewgenie-logo.png"
+                alt="BrewGenie"
+                width={50}
+                height={50}
+                priority
+                style={{ background: 'transparent' }}
+                className="object-contain"
+              />
               <span className="text-xl font-bold text-gray-900">
-                Inspector Dom
+                BrewGenie
               </span>
             </Link>
             <button

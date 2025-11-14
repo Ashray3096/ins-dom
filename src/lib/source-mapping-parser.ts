@@ -70,21 +70,22 @@ export function mapAITypeToDBType(aiType: string): string {
   const typeMap: Record<string, string> = {
     'TEXT': 'TEXT',
     'STRING': 'TEXT',
-    'NUMBER': 'NUMERIC',
-    'NUMERIC': 'NUMERIC',
-    'INTEGER': 'INTEGER',
-    'INT': 'INTEGER',
-    'FLOAT': 'NUMERIC',
-    'DECIMAL': 'NUMERIC',
+    'NUMBER': 'NUMBER',
+    'NUMERIC': 'NUMBER',
+    'INTEGER': 'NUMBER',
+    'INT': 'NUMBER',
+    'FLOAT': 'NUMBER',
+    'DECIMAL': 'NUMBER',
     'BOOLEAN': 'BOOLEAN',
     'BOOL': 'BOOLEAN',
     'DATE': 'DATE',
-    'DATETIME': 'TIMESTAMPTZ',
-    'TIMESTAMP': 'TIMESTAMPTZ',
-    'TIME': 'TIME',
+    'DATETIME': 'DATE',
+    'TIMESTAMP': 'DATE',
+    'TIMESTAMPTZ': 'DATE',
+    'TIME': 'DATE',
     'UUID': 'UUID',
-    'JSON': 'JSONB',
-    'JSONB': 'JSONB'
+    'JSON': 'JSON',
+    'JSONB': 'JSON'
   };
 
   return typeMap[aiType.toUpperCase()] || 'TEXT';

@@ -170,9 +170,14 @@ export default function EntitiesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-yellow-200 bg-yellow-50/50">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-yellow-700" />
-              <CardTitle className="text-base text-yellow-900">INTERIM</CardTitle>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-yellow-700" />
+                <CardTitle className="text-base text-yellow-900">INTERIM</CardTitle>
+              </div>
+              <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-300">
+                {entities.filter(e => e.entity_type === 'INTERIM').length}
+              </Badge>
             </div>
             <CardDescription>Raw extracted data</CardDescription>
           </CardHeader>
@@ -185,9 +190,14 @@ export default function EntitiesPage() {
 
         <Card className="border-blue-200 bg-blue-50/50">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Database className="w-5 h-5 text-blue-700" />
-              <CardTitle className="text-base text-blue-900">REFERENCE</CardTitle>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Database className="w-5 h-5 text-blue-700" />
+                <CardTitle className="text-base text-blue-900">REFERENCE</CardTitle>
+              </div>
+              <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300">
+                {entities.filter(e => e.entity_type === 'REFERENCE').length}
+              </Badge>
             </div>
             <CardDescription>Lookup/dimension tables</CardDescription>
           </CardHeader>
@@ -200,9 +210,14 @@ export default function EntitiesPage() {
 
         <Card className="border-green-200 bg-green-50/50">
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Layers className="w-5 h-5 text-green-700" />
-              <CardTitle className="text-base text-green-900">MASTER</CardTitle>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-5 h-5 text-green-700" />
+                <CardTitle className="text-base text-green-900">MASTER</CardTitle>
+              </div>
+              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300">
+                {entities.filter(e => e.entity_type === 'MASTER').length}
+              </Badge>
             </div>
             <CardDescription>Core business fact tables</CardDescription>
           </CardHeader>

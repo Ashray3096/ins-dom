@@ -11,7 +11,7 @@ import Anthropic from '@anthropic-ai/sdk';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, entities, interim_entities, conversation_history = [] } = body;
+    const { message, entities, interim_entities, conversation_history = [], selected_entity = null } = body;
 
     if (!message) {
       return NextResponse.json({ error: 'Message required' }, { status: 400 });
@@ -20,12 +20,18 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
 
     // Get full details of INTERIM entities with fields
-    // Use explicit relationship name to avoid ambiguity
-    const { data: interimData } = await supabase
+    // Filter by selected entity if specified
+    let query = supabase
       .from('entities')
       .select('*, entity_fields!entity_fields_entity_id_fkey(*)')
       .eq('entity_type', 'INTERIM')
       .eq('table_status', 'created');
+
+    if (selected_entity) {
+      query = query.eq('name', selected_entity);
+    }
+
+    const { data: interimData } = await query;
 
     // Build context from INTERIM entities
     const interimContext = (interimData || []).map(entity => {
@@ -59,8 +65,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Build AI prompt
-    const prompt = `You are a data modeling expert helping design a star schema for analytics.
+    const entityContextNote = selected_entity
+      ? `\n**IMPORTANT: Focus ONLY on the "${selected_entity}" entity. Do not suggest dimensions or facts from other entities.**\n`
+      : '';
 
+    const prompt = `You are a data modeling expert helping design a star schema for analytics.
+${entityContextNote}
 Current INTERIM entities (raw staging data):
 ${interimContext.map(e => `
 ${e.name}:
@@ -74,7 +84,7 @@ ${entities.map((e: any) => `- ${e.name} (${e.entity_type})`).join('\n')}
 User question: "${message}"
 
 IMPORTANT GUIDELINES:
-1. Unless the user explicitly asks for only dimensions OR only facts, provide BOTH dimensions AND facts in your suggestions to create a complete star schema.
+1. ${selected_entity ? `Focus exclusively on ${selected_entity}. All suggestions must use data from ${selected_entity} only.` : 'Unless the user explicitly asks for only dimensions OR only facts, provide BOTH dimensions AND facts in your suggestions to create a complete star schema.'}
 2. If the user asks to modify previous suggestions (e.g., "combine X and Y", "remove Z", "add field W"), MODIFY the previous schema design rather than creating a completely new one.
 3. Maintain consistency with what was discussed earlier in the conversation.
 4. If creating modified suggestions, include ALL entities (modified ones + unchanged ones) so the user has the complete picture.

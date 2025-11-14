@@ -10,6 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Loader2, Send, Plus, Database as DatabaseIcon, ArrowRight, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { QuickStartCards } from './quick-start-cards';
@@ -67,7 +74,17 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
     }
     return false;
   });
+  const [selectedEntity, setSelectedEntity] = useState<string | null>(() => {
+    // Restore selected entity from sessionStorage
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('ai-selected-entity');
+    }
+    return null;
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Get INTERIM entities for dropdown
+  const interimEntities = entities.filter(e => e.entity_type === 'INTERIM');
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -100,7 +117,13 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
       setAnalysisStep(3);
       setAnalysisLabel('Generating suggestions...');
 
-      const response = await fetch('/api/star-schema/auto-analyze');
+      const response = await fetch('/api/star-schema/auto-analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          selected_entity: selectedEntity
+        })
+      });
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -153,7 +176,8 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
           message: userMessage.content,
           entities,
           interim_entities: interimEntities,
-          conversation_history: conversationHistory
+          conversation_history: conversationHistory,
+          selected_entity: selectedEntity
         })
       });
 
@@ -203,25 +227,73 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
     runAutoAnalysis();
   };
 
+  const handleEntityContextChange = (value: string) => {
+    const newEntity = value === 'all' ? null : value;
+    setSelectedEntity(newEntity);
+
+    // Save to sessionStorage
+    if (typeof window !== 'undefined') {
+      if (newEntity) {
+        sessionStorage.setItem('ai-selected-entity', newEntity);
+      } else {
+        sessionStorage.removeItem('ai-selected-entity');
+      }
+    }
+
+    // Clear chat and re-run analysis for new context
+    setMessages([]);
+    setShowCards(true);
+    setHasRunAnalysis(false);
+    sessionStorage.removeItem('ai-chat-messages');
+    sessionStorage.removeItem('ai-analysis-run');
+
+    toast.success(newEntity ? `Context switched to ${newEntity}` : 'Context switched to all entities');
+
+    // Re-run analysis with new context
+    setTimeout(() => runAutoAnalysis(), 100);
+  };
+
   return (
     <div className="flex flex-col h-full">
-      {/* Header with Clear Button */}
-      {messages.length > 1 && (
-        <div className="flex-none border-b bg-white p-3 flex justify-between items-center">
-          <div className="text-sm text-gray-600">
-            {messages.length - 1} message{messages.length !== 2 ? 's' : ''}
+      {/* Entity Context Selector */}
+      <div className="flex-none border-b bg-white p-3">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1">
+            <label className="text-sm font-medium text-gray-700">Context:</label>
+            <Select value={selectedEntity || 'all'} onValueChange={handleEntityContextChange}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Entities</SelectItem>
+                {interimEntities.map(e => (
+                  <SelectItem key={e.id} value={e.name}>
+                    {e.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedEntity && (
+              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                Focused on {selectedEntity}
+              </Badge>
+            )}
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClearChat}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-          >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Clear Chat
-          </Button>
+
+          {/* Clear Chat Button */}
+          {messages.length > 1 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearChat}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 className="w-4 h-4 mr-1" />
+              Clear
+            </Button>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">

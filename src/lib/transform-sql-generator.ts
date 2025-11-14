@@ -161,7 +161,23 @@ export function generateFactSQL(
   for (const field of dataFields) {
     const parsed = parseSourceMapping(field.metadata?.source);
     if (parsed && !parsed.isFK) {
-      selectFields.push(`base."${parsed.sourceField}" as "${field.name}"`);
+      // Add type casting for different data types
+      let selectExpr = `base."${parsed.sourceField}"`;
+
+      // Cast based on target field data type
+      if (field.data_type === 'DATE') {
+        selectExpr = `CAST(base."${parsed.sourceField}" AS DATE)`;
+      } else if (field.data_type === 'TIMESTAMPTZ') {
+        selectExpr = `CAST(base."${parsed.sourceField}" AS TIMESTAMPTZ)`;
+      } else if (field.data_type === 'NUMBER') {
+        selectExpr = `CAST(base."${parsed.sourceField}" AS NUMERIC)`;
+      } else if (field.data_type === 'BOOLEAN') {
+        selectExpr = `CAST(base."${parsed.sourceField}" AS BOOLEAN)`;
+      } else if (field.data_type === 'JSON') {
+        selectExpr = `CAST(base."${parsed.sourceField}" AS JSONB)`;
+      }
+
+      selectFields.push(`${selectExpr} as "${field.name}"`);
       insertFields.push(`"${field.name}"`);
     }
   }

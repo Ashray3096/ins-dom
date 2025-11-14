@@ -413,11 +413,22 @@ export function generateEntityTableSQL(
     return `  "${f.name}" ${sqlType(f.data_type)} ${nullable}`;
   });
 
-  // Add metadata columns
-  columns.push('  extraction_date TIMESTAMPTZ DEFAULT NOW()');
-  columns.push('  source_system TEXT DEFAULT \'inspector_dom\'');
-  columns.push('  created_at TIMESTAMPTZ DEFAULT NOW()');
-  columns.push('  updated_at TIMESTAMPTZ DEFAULT NOW()');
+  // Get existing field names to avoid duplicates
+  const existingFieldNames = new Set(fields.map(f => f.name.toLowerCase()));
+
+  // Add metadata columns (only if not already defined by user)
+  if (!existingFieldNames.has('extraction_date')) {
+    columns.push('  extraction_date TIMESTAMPTZ DEFAULT NOW()');
+  }
+  if (!existingFieldNames.has('source_system')) {
+    columns.push('  source_system TEXT DEFAULT \'inspector_dom\'');
+  }
+  if (!existingFieldNames.has('created_at')) {
+    columns.push('  created_at TIMESTAMPTZ DEFAULT NOW()');
+  }
+  if (!existingFieldNames.has('updated_at')) {
+    columns.push('  updated_at TIMESTAMPTZ DEFAULT NOW()');
+  }
 
   return `-- Entity table: ${entity.display_name}
 -- Type: ${entity.entity_type}

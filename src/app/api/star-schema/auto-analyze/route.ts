@@ -11,17 +11,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import Anthropic from '@anthropic-ai/sdk';
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
+    const body = await request.json().catch(() => ({}));
+    const { selected_entity = null } = body;
+
     const supabase = await createClient();
 
     // Step 1: Get INTERIM entities with fields
-    // Use explicit relationship name to avoid ambiguity
-    const { data: interimEntities, error: entitiesError } = await supabase
+    // Filter by selected entity if specified
+    let query = supabase
       .from('entities')
       .select('*, entity_fields!entity_fields_entity_id_fkey(*)')
       .eq('entity_type', 'INTERIM')
       .eq('table_status', 'created'); // Only analyze entities with tables
+
+    if (selected_entity) {
+      query = query.eq('name', selected_entity);
+    }
+
+    const { data: interimEntities, error: entitiesError } = await query;
 
     console.log('Auto-analysis query result:', {
       count: interimEntities?.length || 0,
@@ -73,7 +82,13 @@ export async function GET(request: NextRequest) {
     });
 
     // Step 4: Call AI to generate intelligent quick start cards
+    const contextNote = selected_entity
+      ? `Focus ONLY on the "${selected_entity}" entity. Generate suggestions exclusively from this data source.`
+      : 'Consider all INTERIM entities for a comprehensive star schema.';
+
     const prompt = `Analyze these INTERIM data entities and generate 5-7 intelligent quick start suggestions for dimensional modeling.
+
+${contextNote}
 
 INTERIM Entities:
 ${entityContext.map(e => `
@@ -85,7 +100,7 @@ ${e.name} (${e.record_count} records):
 Generate quick start cards that:
 1. Suggest specific REFERENCE (dimension) tables based on actual data patterns
 2. Suggest MASTER (fact) tables for analytics
-3. Identify natural join keys between entities
+3. ${selected_entity ? `Use data ONLY from ${selected_entity}` : 'Identify natural join keys between entities'}
 4. Include data insights (unique counts, detected values)
 
 Return JSON array of cards:

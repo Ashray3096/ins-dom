@@ -55,7 +55,7 @@ class HTMLExtractorComponent(BaseExtractor):
                     'html': html_content,
                     'template': self.template  # Pass full template with fields + selectors
                 },
-                timeout=60  # AI takes longer than selector-based
+                timeout=180  # 3 minutes for AI extraction
             )
 
             if response.status_code != 200:

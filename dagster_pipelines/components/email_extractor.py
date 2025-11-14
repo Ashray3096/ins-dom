@@ -54,7 +54,7 @@ class EmailExtractorComponent(BaseExtractor):
                     'email_content': email_content,
                     'template': self.template
                 },
-                timeout=60
+                timeout=180  # 3 minutes for AI extraction
             )
 
             if response.status_code != 200:

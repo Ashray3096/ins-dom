@@ -273,12 +273,28 @@ export default function ERDiagramPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      console.log('Creating entity from suggestion:', suggestion);
+
+      // Check if entity already exists (query database directly to get fresh data)
+      const { data: existingEntities } = await supabase
+        .from('entities')
+        .select('id, name')
+        .eq('name', suggestion.name)
+        .eq('created_by', user.id);
+
+      if (existingEntities && existingEntities.length > 0) {
+        toast.error(`Entity "${suggestion.name}" already exists. Delete it first or ask AI for a different name.`);
+        return;
+      }
+
       // 1. Create entity
       const entityType = suggestion.type === 'dimension' ? 'REFERENCE' : 'MASTER';
       const displayName = suggestion.name.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
 
       const sourceEntities = getUniqueSourceEntities(suggestion.fields || []);
       const sourceDependencies = sourceEntities.filter(e => e !== suggestion.name);
+
+      console.log('Source dependencies:', sourceDependencies);
 
       const { data: entityData, error: entityError } = await supabase
         .from('entities')
@@ -298,7 +314,10 @@ export default function ERDiagramPage() {
         .select()
         .single();
 
-      if (entityError) throw entityError;
+      if (entityError) {
+        console.error('Entity creation error:', entityError);
+        throw new Error(entityError.message || 'Failed to create entity');
+      }
 
       toast.success(`Created entity: ${suggestion.name}`);
 
@@ -360,7 +379,12 @@ export default function ERDiagramPage() {
         .from('entity_fields')
         .insert(fieldsToInsert);
 
-      if (fieldsError) throw fieldsError;
+      if (fieldsError) {
+        console.error('Fields creation error:', fieldsError);
+        // Rollback - delete the entity we just created
+        await supabase.from('entities').delete().eq('id', entityData.id);
+        throw new Error(fieldsError.message || 'Failed to create fields');
+      }
 
       toast.success(`Created ${fieldsToInsert.length} fields`);
 
