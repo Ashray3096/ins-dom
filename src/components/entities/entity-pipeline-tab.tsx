@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Play, CheckCircle, XCircle, Clock, FileText, Database as DatabaseIcon, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
+import { PipelineProgress } from './pipeline-progress';
 
 interface Entity {
   id: string;
@@ -64,6 +65,14 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
   const [lastRunResult, setLastRunResult] = useState<any>(null);
   const [transformReady, setTransformReady] = useState(false);
   const [dependencies, setDependencies] = useState<any[]>([]);
+  const [sourceEntityTypes, setSourceEntityTypes] = useState<Record<string, string>>({});
+  const [activeJobId, setActiveJobId] = useState<string | null>(() => {
+    // Restore active job from sessionStorage
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem(`pipeline-job-${entityId}`);
+    }
+    return null;
+  });
 
   useEffect(() => {
     loadEntityData();
@@ -125,9 +134,26 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
         }
       }
 
-      // Load pipeline runs (TODO: when we have pipeline_runs table)
-      // For now, show empty
-      setRuns([]);
+      // Load pipeline jobs from database
+      const { data: jobs } = await supabase
+        .from('pipeline_jobs')
+        .select('*')
+        .eq('entity_id', entityId)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      // Convert to PipelineRun format
+      const jobsAsRuns = (jobs || []).map(job => ({
+        id: job.id,
+        started_at: job.started_at || job.created_at,
+        completed_at: job.completed_at,
+        status: job.status,
+        records_processed: job.result?.artifacts_processed || 0,
+        records_loaded: job.result?.records_loaded || 0,
+        error_message: job.error
+      }));
+
+      setRuns(jobsAsRuns);
 
       // Check transformation readiness for REFERENCE/MASTER entities
       if (entityData.entity_type !== 'INTERIM') {
@@ -144,11 +170,27 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
 
   const checkTransformReadiness = async () => {
     try {
+      const supabase = createClient();
       const response = await fetch(`/api/entities/${entityId}/run-transform`);
       if (response.ok) {
         const result = await response.json();
         setTransformReady(result.ready);
         setDependencies(result.dependencies || []);
+
+        // Fetch entity types for source entities
+        const sourceNames = result.dependencies?.map((d: any) => d.entity) || [];
+        if (sourceNames.length > 0) {
+          const { data: sourceEntities } = await supabase
+            .from('entities')
+            .select('name, entity_type')
+            .in('name', sourceNames);
+
+          const types: Record<string, string> = {};
+          sourceEntities?.forEach(e => {
+            types[e.name] = e.entity_type;
+          });
+          setSourceEntityTypes(types);
+        }
       }
     } catch (error) {
       console.error('Error checking transform readiness:', error);
@@ -179,24 +221,49 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
         throw new Error(result.error || 'Failed to run pipeline');
       }
 
-      // Save result to display
-      setLastRunResult(result);
+      // Save job ID for progress tracking
+      if (result.job_id) {
+        setActiveJobId(result.job_id);
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(`pipeline-job-${entityId}`, result.job_id);
+        }
+      }
 
-      toast.success(
-        `✅ Data loaded! ${result.records_loaded || 0} records from ${result.artifacts_processed || 0} files`
-      );
-
-      // Reload data to update file count if needed
-      setTimeout(() => {
-        loadEntityData();
-      }, 1000);
+      toast.success('Pipeline started in background. Check progress below.');
+      setRunning(false);
 
     } catch (error) {
       console.error('Error running pipeline:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to run pipeline');
-    } finally {
       setRunning(false);
     }
+  };
+
+  const handleJobComplete = (job: any) => {
+    // Clear active job
+    setActiveJobId(null);
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(`pipeline-job-${entityId}`);
+    }
+
+    // Show results
+    if (job.result) {
+      setLastRunResult(job.result);
+      toast.success(
+        `✅ Data loaded! ${job.result.records_loaded || 0} records from ${job.result.artifacts_processed || 0} files`
+      );
+    }
+
+    // Reload entity data
+    setTimeout(() => loadEntityData(), 1000);
+  };
+
+  const handleJobError = (error: string) => {
+    setActiveJobId(null);
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(`pipeline-job-${entityId}`);
+    }
+    toast.error(`Pipeline failed: ${error}`);
   };
 
   const handleRunTransform = async () => {
@@ -360,8 +427,19 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
             </div>
           )}
 
+          {/* Active Job Progress - for INTERIM entities */}
+          {entity.entity_type === 'INTERIM' && activeJobId && (
+            <div className="pt-4">
+              <PipelineProgress
+                jobId={activeJobId}
+                onComplete={handleJobComplete}
+                onError={handleJobError}
+              />
+            </div>
+          )}
+
           {/* Load Data Button - for INTERIM entities */}
-          {entity.entity_type === 'INTERIM' && (
+          {entity.entity_type === 'INTERIM' && !activeJobId && (
             <div className="pt-4">
               <Button
                 onClick={handleRunPipeline}
@@ -372,7 +450,7 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
                 {running ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Loading Data...
+                    Starting Pipeline...
                   </>
                 ) : (
                   <>
@@ -470,17 +548,35 @@ export function EntityPipelineTab({ entityId }: { entityId: string }) {
                 <div key={dep.entity} className="flex items-center">
                   {/* Source Entity */}
                   <div className="flex flex-col items-center">
-                    <div className="px-6 py-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg">
+                    <div className={`px-6 py-4 border-2 rounded-lg ${
+                      sourceEntityTypes[dep.entity] === 'INTERIM'
+                        ? 'bg-yellow-50 border-yellow-300'
+                        : sourceEntityTypes[dep.entity] === 'REFERENCE'
+                        ? 'bg-blue-50 border-blue-300'
+                        : 'bg-green-50 border-green-300'
+                    }`}>
                       <div className="flex items-center gap-2">
-                        <DatabaseIcon className="w-5 h-5 text-yellow-600" />
+                        <DatabaseIcon className={`w-5 h-5 ${
+                          sourceEntityTypes[dep.entity] === 'INTERIM'
+                            ? 'text-yellow-600'
+                            : sourceEntityTypes[dep.entity] === 'REFERENCE'
+                            ? 'text-blue-600'
+                            : 'text-green-600'
+                        }`} />
                         <div>
                           <div className="font-medium text-sm">{dep.entity}</div>
                           <div className="text-xs text-gray-500">{dep.rowCount} records</div>
                         </div>
                       </div>
                     </div>
-                    <Badge variant="outline" className="mt-2 text-xs bg-yellow-100">
-                      SOURCE
+                    <Badge variant="outline" className={`mt-2 text-xs ${
+                      sourceEntityTypes[dep.entity] === 'INTERIM'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : sourceEntityTypes[dep.entity] === 'REFERENCE'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-green-100 text-green-700'
+                    }`}>
+                      {sourceEntityTypes[dep.entity] || 'SOURCE'}
                     </Badge>
                   </div>
 

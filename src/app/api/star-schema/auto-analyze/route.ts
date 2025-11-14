@@ -69,6 +69,15 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    // Get existing REFERENCE and MASTER entities
+    const { data: allEntities } = await supabase
+      .from('entities')
+      .select('*, entity_fields!entity_fields_entity_id_fkey(*)')
+      .eq('table_status', 'created');
+
+    const existingDimensions = (allEntities || []).filter(e => e.entity_type === 'REFERENCE');
+    const existingFacts = (allEntities || []).filter(e => e.entity_type === 'MASTER');
+
     // Step 3: Build context for AI analysis
     const entityContext = entitiesWithData.map(e => {
       const fields = e.entity_fields || [];
@@ -86,22 +95,31 @@ export async function POST(request: NextRequest) {
       ? `Focus ONLY on the "${selected_entity}" entity. Generate suggestions exclusively from this data source.`
       : 'Consider all INTERIM entities for a comprehensive star schema.';
 
-    const prompt = `Analyze these INTERIM data entities and generate 5-7 intelligent quick start suggestions for dimensional modeling.
+    const prompt = `Analyze the current schema and generate 5-7 intelligent quick start suggestions.
 
 ${contextNote}
 
-INTERIM Entities:
+INTERIM Entities (Source Data):
 ${entityContext.map(e => `
 ${e.name} (${e.record_count} records):
   Fields: ${e.fields.join(', ')}
-  Sample: ${JSON.stringify(e.sample, null, 2).substring(0, 400)}
+  Sample: ${JSON.stringify(e.sample, null, 2).substring(0, 300)}
 `).join('\n')}
 
+EXISTING Dimensions:
+${existingDimensions.length === 0 ? 'None yet' : existingDimensions.map(e => {
+  const fields = e.entity_fields || [];
+  return `${e.name}: ${fields.map((f: any) => f.name).join(', ')}`;
+}).join('\n')}
+
+EXISTING Facts:
+${existingFacts.length === 0 ? 'None yet' : existingFacts.map(e => `${e.name}`).join(', ')}
+
 Generate quick start cards that:
-1. Suggest specific REFERENCE (dimension) tables based on actual data patterns
-2. Suggest MASTER (fact) tables for analytics
-3. ${selected_entity ? `Use data ONLY from ${selected_entity}` : 'Identify natural join keys between entities'}
-4. Include data insights (unique counts, detected values)
+1. Suggest MISSING dimensions (don't suggest ones that already exist)
+2. Suggest MISSING facts (don't suggest ones that already exist)
+3. ${selected_entity ? `Use data ONLY from ${selected_entity}` : 'Consider all sources'}
+4. Include data insights from actual records
 
 Return JSON array of cards:
 [

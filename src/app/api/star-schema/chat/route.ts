@@ -33,6 +33,21 @@ export async function POST(request: NextRequest) {
 
     const { data: interimData } = await query;
 
+    // Get ALL entities (REFERENCE and MASTER) with their fields
+    const { data: allEntities } = await supabase
+      .from('entities')
+      .select('*, entity_fields!entity_fields_entity_id_fkey(*)')
+      .eq('table_status', 'created')
+      .order('entity_type');
+
+    const referenceEntities = (allEntities || []).filter(e => e.entity_type === 'REFERENCE');
+    const masterEntities = (allEntities || []).filter(e => e.entity_type === 'MASTER');
+
+    // Get relationships
+    const { data: relationships } = await supabase
+      .from('entity_relationships')
+      .select('*');
+
     // Build context from INTERIM entities
     const interimContext = (interimData || []).map(entity => {
       const fields = entity.entity_fields || [];
@@ -47,20 +62,35 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // Get sample data from tables for better context
+    // Get sample data and record counts
     const sampleData: Record<string, any> = {};
+    const recordCounts: Record<string, number> = {};
+
     for (const entity of interimData || []) {
       try {
-        const { data: samples } = await supabase
+        const { data: samples, count } = await supabase
           .from(entity.name)
-          .select('*')
+          .select('*', { count: 'exact' })
           .limit(3);
 
         if (samples && samples.length > 0) {
-          sampleData[entity.name] = samples[0]; // First record as example
+          sampleData[entity.name] = samples[0];
         }
+        recordCounts[entity.name] = count || 0;
       } catch (err) {
-        // Table might not exist yet
+        recordCounts[entity.name] = 0;
+      }
+    }
+
+    // Get record counts for existing dimensions and facts
+    for (const entity of [...referenceEntities, ...masterEntities]) {
+      try {
+        const { count } = await supabase
+          .from(entity.name)
+          .select('*', { count: 'exact', head: true });
+        recordCounts[entity.name] = count || 0;
+      } catch (err) {
+        recordCounts[entity.name] = 0;
       }
     }
 
@@ -71,23 +101,47 @@ export async function POST(request: NextRequest) {
 
     const prompt = `You are a data modeling expert helping design a star schema for analytics.
 ${entityContextNote}
-Current INTERIM entities (raw staging data):
+
+=== EXISTING SCHEMA ===
+
+INTERIM Entities (Source Data):
 ${interimContext.map(e => `
-${e.name}:
-  Fields: ${e.fields.map(f => `${f.name} (${f.type})`).join(', ')}
-  Sample: ${JSON.stringify(sampleData[e.name] || {}, null, 2).substring(0, 300)}
+${e.name} (${recordCounts[e.name] || 0} records):
+  Fields: ${e.fields.map(f => `${f.name}:${f.type}`).join(', ')}
+  Sample: ${JSON.stringify(sampleData[e.name] || {}, null, 2).substring(0, 200)}
 `).join('\n')}
 
-Current entities in schema:
-${entities.map((e: any) => `- ${e.name} (${e.entity_type})`).join('\n')}
+REFERENCE Entities (Dimensions - ALREADY EXIST):
+${referenceEntities.length === 0 ? 'None created yet' : referenceEntities.map(e => {
+  const fields = e.entity_fields || [];
+  const pkField = fields.find((f: any) => f.is_primary_key);
+  return `
+${e.name} (${recordCounts[e.name] || 0} records):
+  PRIMARY KEY: ${pkField?.name || 'id'}
+  Fields: ${fields.map((f: any) => f.name).join(', ')}
+  Source: ${(e.metadata?.source_dependencies || []).join(', ') || 'N/A'}`;
+}).join('\n')}
 
-User question: "${message}"
+MASTER Entities (Facts - ALREADY EXIST):
+${masterEntities.length === 0 ? 'None created yet' : masterEntities.map(e => {
+  const fields = e.entity_fields || [];
+  const fkFields = fields.filter((f: any) => f.foreign_key_entity_id);
+  return `
+${e.name}:
+  Fields: ${fields.map((f: any) => f.name).join(', ')}
+  Foreign Keys: ${fkFields.map((f: any) => f.name).join(', ') || 'None'}`;
+}).join('\n')}
 
-IMPORTANT GUIDELINES:
-1. ${selected_entity ? `Focus exclusively on ${selected_entity}. All suggestions must use data from ${selected_entity} only.` : 'Unless the user explicitly asks for only dimensions OR only facts, provide BOTH dimensions AND facts in your suggestions to create a complete star schema.'}
-2. If the user asks to modify previous suggestions (e.g., "combine X and Y", "remove Z", "add field W"), MODIFY the previous schema design rather than creating a completely new one.
-3. Maintain consistency with what was discussed earlier in the conversation.
-4. If creating modified suggestions, include ALL entities (modified ones + unchanged ones) so the user has the complete picture.
+User Request: "${message}"
+
+CRITICAL RULES:
+1. ${selected_entity ? `Focus exclusively on ${selected_entity}. All suggestions must use data from ${selected_entity} only.` : 'Unless the user explicitly asks for only dimensions OR only facts, provide BOTH dimensions AND facts.'}
+2. DO NOT suggest creating entities that ALREADY EXIST (check REFERENCE and MASTER sections above)
+3. When referencing existing dimensions in fact FKs, use their ACTUAL PRIMARY KEY field name
+   Example: dim_product has PK "dim_product_id", so use "source": "dim_product.dim_product_id"
+4. Use EXACT field names from existing dimensions when creating join conditions
+5. If modifying previous suggestions, include all entities so user has complete picture
+6. Keep same field names as source (don't rename fields - enables proper joins)
 
 Provide helpful guidance on dimensional modeling. When suggesting schema designs, provide specific recommendations in this format:
 

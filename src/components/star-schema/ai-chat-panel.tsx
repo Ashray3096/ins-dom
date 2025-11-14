@@ -254,27 +254,27 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Entity Context Selector */}
-      <div className="flex-none border-b bg-white p-3">
+    <div className="flex flex-col h-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Entity Context Selector - Futuristic Header */}
+      <div className="flex-none border-b border-purple-500/30 bg-black/20 backdrop-blur-sm p-3">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-1">
-            <label className="text-sm font-medium text-gray-700">Context:</label>
+            <label className="text-sm font-medium text-purple-300">Context:</label>
             <Select value={selectedEntity || 'all'} onValueChange={handleEntityContextChange}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-[200px] bg-purple-950/50 border-purple-500/50 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Entities</SelectItem>
+              <SelectContent className="bg-slate-950 border-purple-500/50">
+                <SelectItem value="all" className="text-white hover:bg-purple-900">All Entities</SelectItem>
                 {interimEntities.map(e => (
-                  <SelectItem key={e.id} value={e.name}>
+                  <SelectItem key={e.id} value={e.name} className="text-white hover:bg-purple-900">
                     {e.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             {selectedEntity && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+              <Badge variant="outline" className="bg-purple-500/20 text-purple-300 border-purple-500/50 glow">
                 Focused on {selectedEntity}
               </Badge>
             )}
@@ -286,7 +286,7 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
               variant="ghost"
               size="sm"
               onClick={handleClearChat}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Clear
@@ -295,8 +295,8 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
         </div>
       </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Scrollable Content - Dark theme with particles effect */}
+      <div className="flex-1 overflow-y-auto bg-gradient-to-b from-transparent to-black/20">
         {/* Cards - show initially */}
         {showCards && !analyzing && messages.length <= 1 && (
           <QuickStartCards
@@ -321,7 +321,11 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
         <div className="p-4 space-y-4">
           {messages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'} rounded-lg p-3`}>
+              <div className={`max-w-[85%] ${
+                msg.role === 'user'
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/50'
+                  : 'bg-slate-800/80 text-gray-100 border border-purple-500/30 shadow-lg backdrop-blur-sm'
+              } rounded-lg p-3`}>
                 <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
 
                 {msg.suggestions && msg.suggestions.length > 0 && (
@@ -395,21 +399,22 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
         </div>
       </div>
 
-      {/* Fixed Input - Always at Bottom */}
-      <div className="flex-none border-t bg-white p-4">
+      {/* Fixed Input - Always at Bottom - Futuristic */}
+      <div className="flex-none border-t border-purple-500/30 bg-black/40 backdrop-blur-md p-4">
         <div className="flex gap-2">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="e.g., Design a complete star schema with dimensions and facts"
+            placeholder="✨ Ask AI to design your schema..."
             disabled={loading}
-            className="flex-1"
+            className="flex-1 bg-slate-800/50 border-purple-500/50 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/50 shadow-inner"
           />
           <Button
             onClick={handleSend}
             disabled={loading || !input.trim()}
             size="icon"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 shadow-lg shadow-purple-500/50"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -418,8 +423,8 @@ export function AIChatPanel({ entities, onCreateEntity, onCreateRelationship }: 
             )}
           </Button>
         </div>
-        <div className="mt-2 text-xs text-gray-500 text-center">
-          Press <kbd className="px-1 py-0.5 bg-gray-100 border rounded">Enter</kbd> to send
+        <div className="mt-2 text-xs text-purple-300 text-center">
+          Press <kbd className="px-1 py-0.5 bg-purple-950/50 border border-purple-500/30 rounded text-purple-300">Enter</kbd> to send
         </div>
       </div>
     </div>

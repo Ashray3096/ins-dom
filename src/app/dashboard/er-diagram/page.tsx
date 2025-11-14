@@ -492,44 +492,39 @@ export default function ERDiagramPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Header */}
-      <div className="flex-none p-6 border-b bg-white">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Schema Designer</h1>
-            <p className="mt-2 text-gray-600">
-              {entities.length} entities, {edges.length} relationships
-            </p>
+    <div className="flex flex-col h-full">
+      {/* Tabs - Clean header without separate Schema Designer title */}
+      <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)} className="flex flex-col" style={{ height: 'calc(100vh - 4rem)' }}>
+        <div className="flex-none border-b bg-white px-6 pt-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <TabsList>
+                <TabsTrigger value="diagram">Schema Diagram</TabsTrigger>
+                <TabsTrigger value="ai-analysis">✨ Generate Schema with AI</TabsTrigger>
+              </TabsList>
+              <span className="text-sm text-gray-500">
+                {entities.length} entities, {edges.length} relationships
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={loadDiagram}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Refresh
+              </Button>
+              {viewMode === 'diagram' && (
+                <>
+                  <Button variant="outline" size="sm" onClick={handleAutoLayout}>
+                    <Maximize2 className="mr-2 h-4 w-4" />
+                    Auto Layout
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={handleSaveLayout}>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Layout
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={loadDiagram}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh
-            </Button>
-            {viewMode === 'diagram' && (
-              <>
-                <Button variant="outline" size="sm" onClick={handleAutoLayout}>
-                  <Maximize2 className="mr-2 h-4 w-4" />
-                  Auto Layout
-                </Button>
-                <Button variant="outline" size="sm" onClick={handleSaveLayout}>
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Layout
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)} className="flex-1 flex flex-col">
-        <div className="flex-none px-6 pt-4 border-b bg-gray-50">
-          <TabsList>
-            <TabsTrigger value="diagram">Schema Diagram</TabsTrigger>
-            <TabsTrigger value="ai-analysis">✨ Generate Schema with AI</TabsTrigger>
-          </TabsList>
         </div>
 
         {/* Diagram View */}
@@ -584,7 +579,7 @@ export default function ERDiagramPage() {
         </TabsContent>
 
         {/* AI Analysis View */}
-        <TabsContent value="ai-analysis" className="flex-1 mt-0 h-full">
+        <TabsContent value="ai-analysis" className="flex-1 mt-0 h-full overflow-hidden">
           <AIChatPanel
             entities={entities}
             onCreateEntity={handleCreateEntity}

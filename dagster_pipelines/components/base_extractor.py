@@ -186,8 +186,18 @@ class BaseExtractor(ABC):
 
         # Extract data from each artifact
         all_records = []
-        for artifact in artifacts:
+        total_artifacts = len(artifacts)
+
+        for idx, artifact in enumerate(artifacts, 1):
             try:
+                # Update progress if callback provided
+                if hasattr(self, 'update_progress'):
+                    self.update_progress(
+                        idx,
+                        total_artifacts,
+                        f"Processing {artifact.get('filename', 'unknown')} ({idx}/{total_artifacts})"
+                    )
+
                 records = self.extract(artifact)
                 all_records.extend(records)
                 self.logger.info(f"Extracted {len(records)} records from {artifact.get('filename', 'unknown')}")

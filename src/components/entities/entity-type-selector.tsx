@@ -130,51 +130,18 @@ export function EntityTypeSelector({
                 </div>
               )}
 
-              <div className="p-4 space-y-3">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={cn('p-2 rounded', option.badgeColor)}>
-                      <Icon className="w-5 h-5" />
-                    </div>
+              <div className="p-6">
+                <div className="flex flex-col items-center text-center space-y-3">
+                  {/* Icon */}
+                  <div className={cn('p-4 rounded-lg', option.badgeColor)}>
+                    <Icon className="w-8 h-8" />
                   </div>
-                  <Badge variant="secondary" className={option.badgeColor}>
-                    {option.type}
-                  </Badge>
-                </div>
 
-                {/* Title */}
-                <div>
-                  <h4 className="font-semibold text-gray-900">{option.label}</h4>
-                  <p className="text-sm text-gray-600 mt-1">{option.description}</p>
-                </div>
-
-                {/* Examples */}
-                <div>
-                  <p className="text-xs font-medium text-gray-700 mb-1">Examples:</p>
-                  <div className="space-y-1">
-                    {option.examples.map((example) => (
-                      <code
-                        key={example}
-                        className="block text-xs bg-white/60 px-2 py-1 rounded font-mono text-gray-800"
-                      >
-                        {example}
-                      </code>
-                    ))}
+                  {/* Type Name & Description */}
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-900 mb-2">{option.type}</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">{option.description}</p>
                   </div>
-                </div>
-
-                {/* Requirements */}
-                <div>
-                  <p className="text-xs font-medium text-gray-700 mb-1">Requirements:</p>
-                  <ul className="space-y-1">
-                    {option.requirements.map((req) => (
-                      <li key={req} className="text-xs text-gray-600 flex items-start gap-1">
-                        <span className="text-gray-400 mt-0.5">•</span>
-                        <span>{req}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             </Card>

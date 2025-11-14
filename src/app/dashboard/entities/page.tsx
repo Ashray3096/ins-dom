@@ -20,6 +20,7 @@ import {
   Edit,
   Trash2,
   Loader2,
+  Settings,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -57,6 +58,7 @@ export default function EntitiesPage() {
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [entityStats, setEntityStats] = useState<Record<string, { fields: number; records: number }>>({});
 
   useEffect(() => {
     fetchEntities();
@@ -73,6 +75,34 @@ export default function EntitiesPage() {
 
       if (error) throw error;
       setEntities(data || []);
+
+      // Fetch stats for each entity
+      const stats: Record<string, { fields: number; records: number }> = {};
+
+      for (const entity of data || []) {
+        // Field count
+        const { count: fieldCount } = await supabase
+          .from('entity_fields')
+          .select('*', { count: 'exact', head: true })
+          .eq('entity_id', entity.id);
+
+        // Record count (if table exists)
+        let recordCount = 0;
+        if (entity.table_status === 'created') {
+          try {
+            const { count } = await supabase
+              .from(entity.name)
+              .select('*', { count: 'exact', head: true });
+            recordCount = count || 0;
+          } catch {
+            recordCount = 0;
+          }
+        }
+
+        stats[entity.id] = { fields: fieldCount || 0, records: recordCount };
+      }
+
+      setEntityStats(stats);
     } catch (error) {
       console.error('Error fetching entities:', error);
       toast.error('Failed to load entities');
@@ -256,70 +286,102 @@ export default function EntitiesPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
-          {entities.map((entity) => {
-            const Icon = ENTITY_TYPE_ICONS[entity.entity_type];
-            return (
-              <Card key={entity.id}>
-                <CardContent className="flex items-center justify-between p-6">
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className={`p-3 rounded-lg ${
-                      entity.entity_type === 'INTERIM' ? 'bg-yellow-100' :
-                      entity.entity_type === 'REFERENCE' ? 'bg-blue-100' :
-                      'bg-green-100'
-                    }`}>
-                      <Icon className={`w-6 h-6 ${
-                        entity.entity_type === 'INTERIM' ? 'text-yellow-700' :
-                        entity.entity_type === 'REFERENCE' ? 'text-blue-700' :
-                        'text-green-700'
-                      }`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-semibold text-gray-900">{entity.display_name}</h3>
-                        <Badge variant="secondary" className={getEntityTypeBadgeColor(entity.entity_type)}>
+        <Card>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Entity
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Fields
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Records
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {entities.map((entity) => {
+                  const Icon = ENTITY_TYPE_ICONS[entity.entity_type];
+                  return (
+                    <tr key={entity.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg ${
+                            entity.entity_type === 'INTERIM' ? 'bg-yellow-100' :
+                            entity.entity_type === 'REFERENCE' ? 'bg-blue-100' :
+                            'bg-green-100'
+                          }`}>
+                            <Icon className={`w-5 h-5 ${
+                              entity.entity_type === 'INTERIM' ? 'text-yellow-700' :
+                              entity.entity_type === 'REFERENCE' ? 'text-blue-700' :
+                              'text-green-700'
+                            }`} />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-900">{entity.display_name}</div>
+                            <code className="text-xs text-gray-500 font-mono">{entity.name}</code>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge className={getEntityTypeBadgeColor(entity.entity_type)}>
                           {entity.entity_type}
                         </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {entity.status}
-                        </Badge>
-                      </div>
-                      <code className="text-sm text-gray-600 font-mono">{entity.name}</code>
-                      {entity.description && (
-                        <p className="text-sm text-gray-600 mt-2">{entity.description}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Link href={`/dashboard/entities/${entity.id}`}>
-                      <Button variant="ghost" size="sm">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(entity.id, entity.display_name)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-medium text-gray-900">
+                          {entityStats[entity.id]?.fields || 0}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-medium text-gray-900">
+                          {(entityStats[entity.id]?.records || 0).toLocaleString()}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link href={`/dashboard/entities/${entity.id}`}>
+                            <Button variant="outline" size="default">
+                              <Settings className="w-4 h-4 mr-2" />
+                              Configure
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="outline"
+                            size="default"
+                            onClick={() => handleDelete(entity.id, entity.display_name)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       )}
 
       {/* Create Entity Dialog */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Entity</DialogTitle>
             <DialogDescription>
-              Define a new entity for your data warehouse. Choose the appropriate type
-              based on its role in your data pipeline.
+              Define a new entity for your data warehouse
             </DialogDescription>
           </DialogHeader>
           <EntityForm

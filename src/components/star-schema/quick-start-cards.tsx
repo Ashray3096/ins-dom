@@ -128,49 +128,51 @@ export function QuickStartCards({ entities, onCardClick }: QuickStartCardsProps)
   });
 
   const categoryColors = {
-    schema: 'border-purple-300 bg-purple-50 hover:bg-purple-100',
-    dimension: 'border-blue-300 bg-blue-50 hover:bg-blue-100',
-    fact: 'border-green-300 bg-green-50 hover:bg-green-100',
-    analysis: 'border-orange-300 bg-orange-50 hover:bg-orange-100'
+    schema: 'border-purple-500/50 bg-purple-950/30 hover:bg-purple-900/40',
+    dimension: 'border-blue-500/50 bg-blue-950/30 hover:bg-blue-900/40',
+    fact: 'border-green-500/50 bg-green-950/30 hover:bg-green-900/40',
+    analysis: 'border-cyan-500/50 bg-cyan-950/30 hover:bg-cyan-900/40'
   };
 
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Start a Conversation</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-2">
+          Start a Conversation
+        </h1>
+        <p className="text-purple-300/80">
           Ask questions about your data schema and get AI-powered dimensional modeling insights
         </p>
       </div>
 
       {/* Quick Start Label */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-700">Quick Start</h2>
-        <Button variant="ghost" size="sm" onClick={() => window.location.reload()}>
+        <h2 className="text-lg font-semibold text-purple-300">Quick Start</h2>
+        <Button variant="ghost" size="sm" onClick={() => window.location.reload()} className="text-purple-400 hover:text-purple-300 hover:bg-purple-950/30">
           <Sparkles className="w-4 h-4 mr-2" />
           Refresh
         </Button>
       </div>
 
-      {/* Cards Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Cards Grid - Compact */}
+      <div className="grid grid-cols-2 gap-3">
         {cards.map((card, index) => (
           <Card
             key={index}
-            className={`cursor-pointer transition-all border-2 ${categoryColors[card.category]}`}
+            className={`cursor-pointer transition-all border ${categoryColors[card.category]} backdrop-blur-sm shadow-lg hover:shadow-xl hover:shadow-purple-500/20`}
             onClick={() => onCardClick(card.prompt)}
           >
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white border flex items-center justify-center">
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300">
                   {card.icon}
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-1">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-white mb-1 text-sm">
                     {card.title}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs text-gray-300 line-clamp-2">
                     {card.description}
                   </p>
                 </div>

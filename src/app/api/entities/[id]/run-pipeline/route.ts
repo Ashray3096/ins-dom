@@ -9,11 +9,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import { spawn } from 'child_process';
 import path from 'path';
-
-const execAsync = promisify(exec);
 
 export async function POST(
   request: NextRequest,
@@ -106,41 +103,83 @@ export async function POST(
     console.log(`Source: ${source.name} (${source.source_type})`);
     console.log(`==========================================\n`);
 
-    // Execute Dagster extraction component
+    // Get artifact count for progress tracking
+    const { count: artifactCount } = await supabase
+      .from('artifacts')
+      .select('*', { count: 'exact', head: true })
+      .eq('source_id', sourceId)
+      .eq('artifact_type', template.artifact_type);
+
+    // Create pipeline job record
+    const { data: job, error: jobError } = await supabase
+      .from('pipeline_jobs')
+      .insert({
+        entity_id: entity.id,
+        status: 'queued',
+        progress_current: 0,
+        progress_total: artifactCount || 0,
+        progress_message: 'Initializing pipeline...',
+        created_by: user.id
+      })
+      .select()
+      .single();
+
+    if (jobError || !job) {
+      return NextResponse.json({ error: 'Failed to create pipeline job' }, { status: 500 });
+    }
+
+    // Update job to running status immediately
+    await supabase
+      .from('pipeline_jobs')
+      .update({ status: 'running', progress_message: 'Starting extraction...' })
+      .eq('id', job.id);
+
+    // Start Python process in background (don't wait for completion)
     const pythonPath = path.join(process.cwd(), 'dagster_pipelines', 'venv', 'bin', 'python3');
     const scriptPath = path.join(process.cwd(), 'dagster_pipelines', 'run_extraction.py');
 
-    const command = `${pythonPath} ${scriptPath} --entity-id ${entity.id} --template-id ${template.id} --source-id ${sourceId} --artifact-type ${template.artifact_type}`;
-
-    console.log('Executing:', command);
-
-    const { stdout, stderr } = await execAsync(command, {
-      timeout: 300000, // 5 minutes
-      maxBuffer: 10 * 1024 * 1024, // 10MB
+    const pythonProcess = spawn(pythonPath, [
+      '-B',  // Don't use bytecode cache - always run latest code
+      scriptPath,
+      '--entity-id', entity.id,
+      '--template-id', template.id,
+      '--source-id', sourceId,
+      '--artifact-type', template.artifact_type,
+      '--job-id', job.id
+    ], {
+      detached: true,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: {
+        ...process.env,
+        PYTHONDONTWRITEBYTECODE: '1',  // Prevent creating .pyc files
+        NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY
+      }
     });
 
-    if (stderr && !stderr.includes('WARNING')) {
-      console.error('Pipeline stderr:', stderr);
-    }
+    // Log output for debugging
+    pythonProcess.stdout?.on('data', (data) => {
+      console.log(`Pipeline stdout: ${data}`);
+    });
 
-    console.log('Pipeline stdout:', stdout);
+    pythonProcess.stderr?.on('data', (data) => {
+      console.error(`Pipeline stderr: ${data}`);
+    });
 
-    // Parse result
-    const result = JSON.parse(stdout.trim());
+    pythonProcess.on('error', (error) => {
+      console.error(`Pipeline process error:`, error);
+    });
 
-    if (!result.success) {
-      return NextResponse.json({
-        error: result.error || 'Pipeline execution failed',
-        details: result.error_type || 'Unknown error',
-      }, { status: 500 });
-    }
+    // Detach the process so it continues after API returns
+    pythonProcess.unref();
 
-    console.log('✅ Pipeline completed successfully:', result);
+    console.log(`✅ Pipeline job ${job.id} started in background`);
 
     return NextResponse.json({
       success: true,
-      message: `Pipeline completed successfully`,
-      ...result,
+      job_id: job.id,
+      message: 'Pipeline started in background. Check progress in the Pipeline tab.',
     });
 
   } catch (error) {

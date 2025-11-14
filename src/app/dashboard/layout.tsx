@@ -6,10 +6,11 @@
  * Main layout with sidebar navigation, header, and breadcrumbs
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import {
   Database,
@@ -46,8 +47,21 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string>('');
   const pathname = usePathname();
   const router = useRouter();
+
+  // Fetch user info
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        setUserEmail(user.email);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     // TODO: Implement logout logic
@@ -94,13 +108,12 @@ export default function DashboardLayout({
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-            <Link href="/dashboard" className="flex items-center gap-1">
-              <Image
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <img
                 src="/brewgenie-logo.png"
                 alt="BrewGenie"
-                width={50}
-                height={50}
-                priority
+                width="45"
+                height="45"
                 style={{ background: 'transparent' }}
                 className="object-contain"
               />
@@ -157,10 +170,10 @@ export default function DashboardLayout({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate">
-                    User
+                    {userEmail ? userEmail.split('@')[0] : 'User'}
                   </p>
                   <p className="text-xs text-gray-500 truncate">
-                    user@example.com
+                    {userEmail || 'Loading...'}
                   </p>
                 </div>
               </div>
